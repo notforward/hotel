@@ -1,0 +1,236 @@
+package com.epam.project.hotel.dao.entities.mysql;
+
+import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.DataSource;
+import com.epam.project.hotel.sql.entities.Check;
+import com.epam.project.hotel.sql.entities.Room;
+import com.epam.project.hotel.sql.entities.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
+    private static final Logger log = LogManager.getLogger(UserDAO.class);
+    protected CheckDAO(){
+
+    }
+    @Override
+    public Check findCheckByID(int id) throws DBException {
+        log.info("findCheckByID " + id );
+        Connection con = null;
+        Check check;
+        try {
+            con = DataSource.getConnection();
+            check = findCheckByID(con, id);
+            con.commit();
+        } catch (SQLException e) {
+            rollback(con);
+            log.error("Error in findCheckByID");
+            throw new DBException("Cannot find check, please try again");
+        }
+        finally {
+            close(con);
+        }
+        return check;
+    }
+
+    @Override
+    public Check findCheckByID(Connection con, int id) throws DBException {
+        log.info("findCheckByID " + id + " con = " + con );
+        PreparedStatement ps;
+        ResultSet rs;
+        Check check = null;
+        try {
+            ps = con.prepareStatement(SELECT_CHECK_BY_ID);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                check = extractCheck(rs);
+            }
+        } catch (SQLException e) {
+            log.error("Error in findCheckByID");
+            throw new DBException("Cannot find check, please try again");
+        }
+        return check;
+    }
+
+    @Override
+    public Check updateCheckStatus(Check check) throws DBException {
+        log.info("updateCheckStatus + check = " + check);
+        Connection con = null;
+        PreparedStatement ps;
+        try {
+            con = DataSource.getConnection();
+            ps = con.prepareStatement(UPDATE_CHECK_STATUS);
+            ps.setInt(1, check.getCheck_id());
+            log.info("ps = " + ps);
+            ps.executeUpdate();
+            con.commit();
+        } catch (SQLException e) {
+            rollback(con);
+            log.error("Problem in update check status");
+            throw new DBException("Cannot update check status, please try again");
+        }
+        finally {
+            close(con);
+        }
+        check = findCheckByID(check.getCheck_id());
+        return check;
+    }
+
+    @Override
+    public List<Check> findAllUserChecks(User user) throws DBException {
+        log.info("findAllUserChecks");
+        List<Check> checks = new ArrayList<>();
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            con = DataSource.getConnection();
+            ps = con.prepareStatement(SELECT_USER_BY_ID);
+            ps.setInt(1, user.getId());
+            rs = ps.executeQuery();
+            while(rs.next()){
+                checks.add(extractCheck(rs));
+            }
+            log.info("Checks = " + checks);
+        } catch (SQLException e) {
+            log.error("problem in FindAll UserChecks");
+            throw new DBException("Cannot find all users checks, please try again");
+        }
+        return checks;
+    }
+    private Check extractCheck(ResultSet rs) throws SQLException {
+        Check check = new Check();
+
+        check.setCheck_id(rs.getInt("check_id"));
+        check.setUser_id(rs.getInt("user_id"));
+        check.setRoom_id(rs.getInt("room_id"));
+        check.setRoom_in(rs.getDate("room_in"));
+        check.setRoom_out(rs.getDate("room_out"));
+        check.setPrice(rs.getInt("check_price"));
+        check.setCheck_status(rs.getString("check_status"));
+
+        return check;
+    }
+    @Override
+    public Boolean checkCreation(Date arrival, Date department, int id) throws DBException {
+        log.info("CheckDAO#checkCreation");
+        if (arrival.after(department)) {
+            log.info("Arrival after department");
+            return false;
+        }
+        Connection con = null;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            con = DataSource.getConnection();
+            ps = con.prepareStatement(INSPECT_CHECK);
+            log.info("Arrival date = " + arrival + " department date = " + department + " id = " + id);
+            ps.setInt(1, id);
+            log.info("PreparedStatement = " + ps);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                if (
+                        (arrival.after(rs.getDate("room_in"))
+                                && arrival.before(rs.getDate("room_out")))
+                                || (department.before(rs.getDate("room_out"))
+                                && department.after(rs.getDate("room_in")))
+                ) {
+                    log.info("Dates are busy, returning false");
+                    return false;
+                }
+            }
+            con.commit();
+        } catch (SQLException e) {
+            rollback(con);
+            log.error("Error in checkCreation", e);
+            throw new DBException("Sorry, cannot check dates, try again", e);
+        } finally {
+            close(con);
+        }
+        return true;
+    }
+
+    @Override
+    public Check createCheck(User user, Room room, Date arrival, Date departure) throws DBException {
+        log.info("CheckDAO#createCheck(no con)");
+        Check check;
+        Connection con = null;
+        try {
+            con = DataSource.getConnection();
+            check = createCheck(con, user, room, arrival, departure);
+            con.commit();
+        } catch (DBException | SQLException e) {
+            rollback(con);
+            log.error("Problem in creating check");
+            throw new DBException("Can not create check, try again", e);
+        } finally {
+            close(con);
+        }
+        return check;
+    }
+
+    @Override
+    public Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws DBException {
+        log.info("CheckDAO#createCheck(with con)");
+
+        Check check;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(INSERT_CHECK, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, user.getId());
+            ps.setInt(2, room.getId());
+            ps.setDate(3, (java.sql.Date) arrival);
+            ps.setDate(4, (java.sql.Date) departure);
+            ps.setInt(5, room.getPrice());
+            ps.setString(6, "NOT PAYED");
+            log.info("PreparedStatement = " + ps);
+            ps.executeUpdate();
+
+            check = new Check();
+            rs = ps.getGeneratedKeys();
+            if(rs.next()){
+                check.setCheck_id(rs.getInt(1));
+            }
+            check.setUser_id(user.getId());
+            check.setRoom_id(room.getId());
+            check.setRoom_in(arrival);
+            check.setRoom_out(departure);
+            check.setPrice(room.getPrice());
+            check.setCheck_status("NOT PAYED");
+            log.info("Check = " + check);
+        } catch (SQLException e) {
+            log.error("Error in createCheck");
+            throw new DBException("Cannot create check, please try again");
+        }
+        return check;
+    }
+
+    @Override
+    public void rollback(Connection con) {
+        if(con != null){
+            try{
+                con.rollback();
+            } catch (SQLException e) {
+                log.info("Cannot close connection", e);
+            }
+        }
+    }
+
+    @Override
+    public void close(AutoCloseable ac) {
+        if(ac != null){
+            try {
+                ac.close();
+            } catch (Exception e) {
+                log.info("Cannot close auto closeable", e);
+            }
+        }
+    }
+}
