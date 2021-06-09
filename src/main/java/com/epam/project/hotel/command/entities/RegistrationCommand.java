@@ -1,6 +1,8 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
+import com.epam.project.hotel.dao.Factory;
+import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.dao.entities.mysql.UserDAO;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.User;
@@ -25,7 +27,8 @@ public class RegistrationCommand implements Command {
             throw new DBException("Fill all data spaces, please");
         }
 
-        UserDAO userDAO = new UserDAO();
+        Factory factory = MySQLFactory.getInstance();
+        UserDAO userDAO = (UserDAO) factory.getDAO("UserDAO");
         Optional<User> user;
         try {
             user = userDAO.createUser(login, password, email);

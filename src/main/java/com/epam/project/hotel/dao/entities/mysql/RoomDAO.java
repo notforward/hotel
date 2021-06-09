@@ -13,7 +13,9 @@ import java.util.List;
 
 public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     private static final Logger log = LogManager.getLogger(RoomDAO.class);
+    protected RoomDAO(){
 
+    }
     @Override
     public Room findRoomID(int id) throws DBException {
         log.info("RoomDAO#findAllRooms(id)");

@@ -1,6 +1,9 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
+import com.epam.project.hotel.dao.Factory;
+import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
+import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.dao.entities.mysql.RequestDAO;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Request;
@@ -23,9 +26,15 @@ public class CreateRequestCommand implements Command {
         String room_class = req.getParameter("class");
         Date arrival = Date.valueOf(req.getParameter("arrival"));
         Date department = Date.valueOf(req.getParameter("department"));
+        if(arrival.after(department) || department.before(arrival)){
+            throw new DBException("Check your dates and try again, please");
+        }
+        log.info("arrival = " + arrival + " department = " + department);
         User user = ((Optional<User>) req.getSession().getAttribute("user")).get();
-        RequestDAO requestDAO = new RequestDAO();
+        Factory factory = MySQLFactory.getInstance();
+        RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");
         Request request = requestDAO.createRequest(user, size, room_class, arrival, department);
+        log.info("Request = " + request);
         if(request != null){
             req.getSession().setAttribute("requestDone", true);
         }

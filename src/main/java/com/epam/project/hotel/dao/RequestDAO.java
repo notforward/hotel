@@ -15,7 +15,7 @@ public interface RequestDAO extends EntityDAO{
             " VALUES (?, ?, ?, ?, ?, 'CREATED')";
     String SELECT_REQUEST = "SELECT * FROM request WHERE request_id = ?";
     String SELECT_ALL_REQUESTS = "SELECT * FROM request";
-
+    String UPDATE_REQUEST_STATUS = "UPDATE request SET request_status = ? WHERE request_id = ?";
     List<Request> findAllRequests() throws DBException;
 
     Request createRequest(User user, int size, String room_class, Date arrival, Date department) throws DBException;
@@ -23,4 +23,6 @@ public interface RequestDAO extends EntityDAO{
     Request findRequestByID(Connection con, int id) throws DBException;
 
     Request extractRequest(ResultSet rs) throws DBException;
+
+    Request updateRequestStatus(Request request, String status);
 }

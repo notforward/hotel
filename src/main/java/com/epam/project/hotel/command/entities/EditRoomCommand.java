@@ -1,6 +1,9 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
+import com.epam.project.hotel.dao.Factory;
+import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
+import com.epam.project.hotel.dao.entities.mysql.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Room;
@@ -19,7 +22,8 @@ public class EditRoomCommand implements Command {
         Room room = (Room) req.getSession().getAttribute("room");
         String status = req.getParameter("status");
         log.info("Room = " + room + " status = " + status);
-        RoomDAO roomDAO = new RoomDAO();
+        Factory factory = MySQLFactory.getInstance();
+        RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
         room = roomDAO.updateRoomStatus(room, status);
         req.getSession().setAttribute("room", room);
         req.getSession().setAttribute("editRoomResult", true);

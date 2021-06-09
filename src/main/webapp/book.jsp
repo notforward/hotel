@@ -42,8 +42,9 @@
     <c:if test="${sessionScope.dates}">
         <form action="controller" method="post" style="margin: 7px">
             <input type="hidden" name="command" value="createcheck">
-            <label for="textArea" class="form-label">Please, write down information that might help us:</label>
-            <textarea class="form-control" id="textArea" rows="3"></textarea>
+            <div class="alert alert-success" role="alert">
+                This dates available!
+            </div>
             <input type="submit" class="btn btn-dark" value="Book" style="margin-top: 7px">
         </form>
     </c:if>

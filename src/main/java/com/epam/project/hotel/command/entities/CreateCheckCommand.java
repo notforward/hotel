@@ -1,7 +1,9 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
+import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
+import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Check;
 import com.epam.project.hotel.sql.entities.Room;
@@ -30,8 +32,8 @@ public class CreateCheckCommand implements Command {
                 "room = " + room +
                 "arrival = " + arrival +
                 "departure = " + departure);
-
-        CheckDAO checkDAO = new CheckDAO();
+        Factory factory = MySQLFactory.getInstance();
+        CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
         Check check = checkDAO.createCheck(user, room, arrival, departure);
         req.getSession().setAttribute("check", check);
         req.getSession().removeAttribute("arrival");

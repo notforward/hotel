@@ -2,7 +2,7 @@ package com.epam.project.hotel.sql.entities;
 
 import java.util.Date;
 
-public class Check implements Entity{
+public class Check implements Entity {
     private int check_id;
     private int user_id;
     private int room_id;
@@ -10,7 +10,6 @@ public class Check implements Entity{
     private Date room_in;
     private Date room_out;
     private String check_status;
-    private String check_description;
 
     @Override
     public String toString() {
@@ -22,7 +21,6 @@ public class Check implements Entity{
                 ", room_in=" + room_in +
                 ", room_out=" + room_out +
                 ", check_status='" + check_status + '\'' +
-                ", check_description='" + check_description + '\'' +
                 '}';
     }
 
@@ -80,13 +78,5 @@ public class Check implements Entity{
 
     public void setCheck_status(String check_status) {
         this.check_status = check_status;
-    }
-
-    public String getCheck_description() {
-        return check_description;
-    }
-
-    public void setCheck_description(String check_description) {
-        this.check_description = check_description;
     }
 }

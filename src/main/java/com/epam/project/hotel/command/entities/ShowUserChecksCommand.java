@@ -1,7 +1,9 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
+import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
+import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Check;
@@ -24,9 +26,10 @@ public class ShowUserChecksCommand implements Command {
         String adress = "checks.jsp";
         User user = ((Optional<User>) (req.getSession().getAttribute("user")))
                 .get();
-        CheckDAO checkDAO = new CheckDAO();
+        Factory factory = MySQLFactory.getInstance();
+        CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
         List<Check> checks = checkDAO.findAllUserChecks(user);
-        RoomDAO roomDAO = new RoomDAO();
+        RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
         List<Room> rooms = roomDAO.findAllRooms();
         req.getSession().setAttribute("checks", checks);
         req.getSession().setAttribute("rooms", rooms);

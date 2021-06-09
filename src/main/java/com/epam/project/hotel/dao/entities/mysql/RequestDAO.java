@@ -13,14 +13,16 @@ import java.util.List;
 
 public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     private static final Logger log = LogManager.getLogger(UserDAO.class);
+    protected RequestDAO(){
 
+    }
     @Override
     public List<Request> findAllRequests() throws DBException {
         log.info("#findAllRequests");
         Connection con = null;
         Statement st;
         ResultSet rs;
-        List<Request> requests = null;
+        List<Request> requests;
         try {
             con = DataSource.getConnection();
             st = con.createStatement();
@@ -113,6 +115,32 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         } catch (SQLException e) {
             log.error("Problem at extractRequest");
             throw new DBException("Cannot create request, please try again", e);
+        }
+        return request;
+    }
+
+    @Override
+    public Request updateRequestStatus(Request request, String status) {
+        log.info("updateRequestStatus request = " + request + " status = " + status);
+        Connection con = null;
+        PreparedStatement ps;
+        try {
+            con = DataSource.getConnection();
+            ps = con.prepareStatement(UPDATE_REQUEST_STATUS);
+            int k = 1;
+            ps.setString(k++, status);
+            ps.setInt(k, request.getRequest_id());
+            log.info("ps = " + ps);
+            ps.executeUpdate();
+            con.commit();
+            request = findRequestByID(con, request.getRequest_id());
+            log.info("request after update = " + request);
+        } catch (DBException | SQLException e) {
+            rollback(con);
+            e.printStackTrace();
+        }
+        finally {
+            close(con);
         }
         return request;
     }

@@ -17,25 +17,23 @@
         <input type="hidden" name="command" value="createrequest">
         <label for="size">Choose size of a room</label>
         <select class="form-select" id="size" name="size" required>
-            <option selected>Open this select menu</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
         </select>
         <label for="class">Select class of a room</label>
         <select class="form-select" id="class" name="class" required>
-            <option selected>Open this select menu</option>
             <option value="ECONOM">Econom class</option>
             <option value="PREMIUM">Premium</option>
             <option value="LUXURY">Luxury</option>
         </select>
         <label for="arrival"> Select arrival date:
             <input type="date" name="arrival" value="${arrival}"
-                   id="arrival" max="2022-01-01" min="${today}" style="margin-top: 7px">
+                   id="arrival" max="2022-01-01" min="${today}" style="margin-top: 7px" required>
         </label><br>
         <label for="department"> Select department date:
             <input type="date" name="department" value="${departure}"
-                   id="department" max="2022-01-01" min="${today}" style="margin-top: 7px">
+                   id="department" max="2022-01-01" min="${today}" style="margin-top: 7px" required>
         </label><br>
         <input type="submit" class="btn btn-dark" value="Create request">
     </form>

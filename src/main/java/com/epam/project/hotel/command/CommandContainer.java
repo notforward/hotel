@@ -23,6 +23,9 @@ public class CommandContainer {
         commands.put("createrequest", new CreateRequestCommand());
         commands.put("showrequests", new ShowRequestsCommand());
         commands.put("editroom", new EditRoomCommand());
+        commands.put("showrequestadmin", new ShowRequestForAdminCommand());
+        commands.put("checkdateadmin", new CheckDateForAdminCommand());
+        commands.put("declinerequest", new DeclineRequestCommand());
     }
     public static Command getCommand(String command){
         return commands.get(command);

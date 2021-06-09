@@ -13,11 +13,14 @@
 </c:if>
 <c:if test="${sessionScope.requests.size() != 0 }">
     <c:forEach items="${requests}" var="request">
-        <div class="card" style="width: 15rem; display: inline-block">
+        <div class="card" style="width: 15rem; display: inline-block; margin: 7px">
             <h4 class="card-title">Request id: #${request.request_id}</h4>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <a href="controller?command=showrequest?id=${request.request_id}">Review request</a></li>
+                    <c:if test="${request.status == 'MANAGER_DECLINED'}">
+                        <h4>Declined request</h4><br>
+                    </c:if>
+                    <a href="controller?command=showrequestadmin&id=${request.request_id}">Review request</a></li>
             </ul>
         </div>
     </c:forEach>

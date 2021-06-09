@@ -1,6 +1,9 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
+import com.epam.project.hotel.dao.Factory;
+import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
+import com.epam.project.hotel.dao.entities.mysql.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Room;
@@ -18,7 +21,8 @@ public class ShowRoomCommand implements Command {
         String adress = "room.jsp";
         int id = Integer.parseInt(req.getParameter("id"));
         log.info("id = " + id);
-        RoomDAO roomDAO = new RoomDAO();
+        Factory factory = MySQLFactory.getInstance();
+        RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
         Room room = roomDAO.findRoomID(id);
         log.info("Room = " + room);
         req.getSession().setAttribute("room", room);

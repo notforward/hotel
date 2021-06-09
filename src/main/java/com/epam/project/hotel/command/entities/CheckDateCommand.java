@@ -1,7 +1,6 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
-import com.epam.project.hotel.dao.EntityDAO;
 import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;

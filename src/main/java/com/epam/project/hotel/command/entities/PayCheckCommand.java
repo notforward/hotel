@@ -1,7 +1,9 @@
 package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
+import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
+import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Check;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +18,8 @@ public class PayCheckCommand implements Command {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
         log.info("PayCheckCommand#execute");
         String adress = "check.jsp";
-        CheckDAO checkDAO = new CheckDAO();
+        Factory factory = MySQLFactory.getInstance();
+        CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
         Check check = (Check) req.getSession().getAttribute("check");
         check = checkDAO.updateCheckStatus(check);
         log.info("Check = " + check);

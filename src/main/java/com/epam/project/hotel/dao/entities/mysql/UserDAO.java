@@ -12,7 +12,9 @@ import java.util.Optional;
 
 public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
     private static final Logger log = LogManager.getLogger(UserDAO.class);
+    protected UserDAO(){
 
+    }
     @Override
     public Optional<User> createUser(String login, String password, String email) throws DBException {
         log.info("UserDAO#createUser(Login, pass, email)");
@@ -88,7 +90,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
             log.error("Error in findUserLOG", e);
             throw new DBException("Cannot find user by ID, try again", e);
         }
-        return Optional.of(user);
+        return Optional.ofNullable(user);
     }
 
     @Override

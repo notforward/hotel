@@ -21,6 +21,7 @@ public class Request implements Entity {
                 ", room_class='" + room_class + '\'' +
                 ", arrival=" + arrival +
                 ", department=" + department +
+                ", status='" + status + '\'' +
                 '}';
     }
 
