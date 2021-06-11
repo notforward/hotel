@@ -11,6 +11,7 @@ public class Request implements Entity {
     private Date arrival;
     private Date department;
     private String status;
+    private int room_id;
 
     @Override
     public String toString() {
@@ -22,6 +23,7 @@ public class Request implements Entity {
                 ", arrival=" + arrival +
                 ", department=" + department +
                 ", status='" + status + '\'' +
+                ", room_id=" + room_id +
                 '}';
     }
 
@@ -79,5 +81,13 @@ public class Request implements Entity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(int room_id) {
+        this.room_id = room_id;
     }
 }

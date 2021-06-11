@@ -3,6 +3,7 @@ package com.epam.project.hotel.dao.entities.mysql;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Request;
+import com.epam.project.hotel.sql.entities.Room;
 import com.epam.project.hotel.sql.entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
-    private static final Logger log = LogManager.getLogger(UserDAO.class);
+    private static final Logger log = LogManager.getLogger(RequestDAO.class);
     protected RequestDAO(){
 
     }
@@ -88,10 +89,20 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         Request request = null;
         try {
             ps = con.prepareStatement(SELECT_REQUEST);
-            ps.setInt(1, id);
+            int k = 1;
+            ps.setInt(k, id);
+            log.info("ps select request = " + ps);
             rs = ps.executeQuery();
             if(rs.next()){
                 request = extractRequest(rs);
+            }
+            ps = con.prepareStatement(SELECT_RESPONSE);
+            ps.setInt(k, id);
+            log.info("ps select response = " + ps);
+            rs = ps.executeQuery();
+            if(rs.next() && request != null){
+                request = extractResponse(request, rs);
+                log.info("request after extracting response = " + request);
             }
         } catch (SQLException e) {
             log.error("Problem at findRequestByID");
@@ -120,27 +131,71 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     }
 
     @Override
-    public Request updateRequestStatus(Request request, String status) {
-        log.info("updateRequestStatus request = " + request + " status = " + status);
-        Connection con = null;
+    public Request createResponse(Connection con, Request request, Room room) throws DBException {
+        log.info("#createResponse request = " + request + " room = " + room);
         PreparedStatement ps;
         try {
+            ps = con.prepareStatement(INSERT_RESPONSE);
+            int k = 1;
+            ps.setInt(k++, request.getRequest_id());
+            ps.setInt(k, room.getId());
+            log.info("ps = " + ps);
+            ps.executeUpdate();
+            request = findRequestByID(con, request.getRequest_id());
+            log.info("request after creating response = " + request);
+        } catch (SQLException e) {
+            log.error("Problem at createResponse");
+            throw new DBException("Cannot create response, try again", e);
+        }
+        return request;
+    }
+
+    @Override
+    public Request extractResponse(Request request, ResultSet rs) throws DBException {
+        log.info("#extractResponse req = " + request);
+        try {
+            request.setRoom_id(rs.getInt("room_id"));
+        } catch (SQLException e) {
+            log.error("Problem at extract Response", e);
+            throw new DBException("Cannot extract response, try again");
+        }
+        return request;
+    }
+
+    @Override
+    public Request updateRequestStatus(Request request, String status) throws DBException {
+        Connection con = null;
+        try {
             con = DataSource.getConnection();
+            request = updateRequestStatus(con, request, status);
+            con.commit();
+        } catch (SQLException e) {
+            rollback(con);
+            log.error("Problem at updatingRequestStatus");
+            throw new DBException("Cannot update request status, try again");
+        }
+        finally {
+            close(con);
+        }
+        return request;
+    }
+
+    @Override
+    public Request updateRequestStatus(Connection con, Request request, String status) throws DBException{
+        log.info("updateRequestStatus request = " + request + " status = " + status);
+        PreparedStatement ps;
+        try {
             ps = con.prepareStatement(UPDATE_REQUEST_STATUS);
             int k = 1;
             ps.setString(k++, status);
             ps.setInt(k, request.getRequest_id());
             log.info("ps = " + ps);
             ps.executeUpdate();
-            con.commit();
             request = findRequestByID(con, request.getRequest_id());
             log.info("request after update = " + request);
         } catch (DBException | SQLException e) {
-            rollback(con);
-            e.printStackTrace();
-        }
-        finally {
-            close(con);
+            log.error("Problem at updateRequestStatus");
+            throw new DBException("Cannot update request status, try again");
         }
         return request;
     }

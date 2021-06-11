@@ -17,7 +17,7 @@ public class DeclineRequestCommand implements Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
         log.info("DeclineRequestCommand#execute");
-        String adress = "show-request.jsp";
+        String adress = "request-admin.jsp";
         Request request = (Request) req.getSession().getAttribute("request");
         log.info("request = " + request);
         Factory factory = MySQLFactory.getInstance();

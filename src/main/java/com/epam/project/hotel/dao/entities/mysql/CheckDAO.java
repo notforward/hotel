@@ -14,13 +14,15 @@ import java.util.Date;
 import java.util.List;
 
 public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
-    private static final Logger log = LogManager.getLogger(UserDAO.class);
-    protected CheckDAO(){
+    private static final Logger log = LogManager.getLogger(CheckDAO.class);
+
+    protected CheckDAO() {
 
     }
+
     @Override
     public Check findCheckByID(int id) throws DBException {
-        log.info("findCheckByID " + id );
+        log.info("findCheckByID " + id);
         Connection con = null;
         Check check;
         try {
@@ -31,8 +33,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             rollback(con);
             log.error("Error in findCheckByID");
             throw new DBException("Cannot find check, please try again");
-        }
-        finally {
+        } finally {
             close(con);
         }
         return check;
@@ -40,7 +41,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
 
     @Override
     public Check findCheckByID(Connection con, int id) throws DBException {
-        log.info("findCheckByID " + id + " con = " + con );
+        log.info("findCheckByID " + id + " con = " + con);
         PreparedStatement ps;
         ResultSet rs;
         Check check = null;
@@ -48,7 +49,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             ps = con.prepareStatement(SELECT_CHECK_BY_ID);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 check = extractCheck(rs);
             }
         } catch (SQLException e) {
@@ -74,8 +75,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             rollback(con);
             log.error("Problem in update check status");
             throw new DBException("Cannot update check status, please try again");
-        }
-        finally {
+        } finally {
             close(con);
         }
         check = findCheckByID(check.getCheck_id());
@@ -94,7 +94,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             ps = con.prepareStatement(SELECT_USER_BY_ID);
             ps.setInt(1, user.getId());
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 checks.add(extractCheck(rs));
             }
             log.info("Checks = " + checks);
@@ -104,6 +104,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         }
         return checks;
     }
+
     private Check extractCheck(ResultSet rs) throws SQLException {
         Check check = new Check();
 
@@ -117,34 +118,15 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
 
         return check;
     }
+
     @Override
     public Boolean checkCreation(Date arrival, Date department, int id) throws DBException {
         log.info("CheckDAO#checkCreation");
-        if (arrival.after(department)) {
-            log.info("Arrival after department");
-            return false;
-        }
         Connection con = null;
-        PreparedStatement ps;
-        ResultSet rs;
+        boolean available;
         try {
             con = DataSource.getConnection();
-            ps = con.prepareStatement(INSPECT_CHECK);
-            log.info("Arrival date = " + arrival + " department date = " + department + " id = " + id);
-            ps.setInt(1, id);
-            log.info("PreparedStatement = " + ps);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                if (
-                        (arrival.after(rs.getDate("room_in"))
-                                && arrival.before(rs.getDate("room_out")))
-                                || (department.before(rs.getDate("room_out"))
-                                && department.after(rs.getDate("room_in")))
-                ) {
-                    log.info("Dates are busy, returning false");
-                    return false;
-                }
-            }
+            available = checkCreation(con, arrival, department, id);
             con.commit();
         } catch (SQLException e) {
             rollback(con);
@@ -152,6 +134,45 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             throw new DBException("Sorry, cannot check dates, try again", e);
         } finally {
             close(con);
+        }
+        return available;
+    }
+
+    @Override
+    public Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws DBException {
+        log.info("CheckDAO#checkCreation");
+        if (arrival.after(department)) {
+            log.info("Arrival after department");
+            return false;
+        }
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(INSPECT_CHECK);
+            log.info("Arrival date = " + arrival + " department date = " + department + " id = " + id);
+            ps.setInt(1, id);
+            log.info("PreparedStatement = " + ps);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                log.info("arrival after room_in where arrival = " + arrival + " room_in = " + rs.getDate("room_in")
+                       + arrival.after(rs.getDate("room_in")));
+                log.info("arrival before room_out where arrival = " + arrival + "room_out = " + rs.getDate("room_out")
+                        + " result = " + arrival.before(rs.getDate("room_out")));
+                if (
+                        (arrival.after(rs.getDate("room_in"))
+                                && arrival.before(rs.getDate("room_out")))
+                                || (department.before(rs.getDate("room_out"))
+                                && department.after(rs.getDate("room_in")))
+                                || (arrival.before(rs.getDate("room_in"))
+                                && department.after(rs.getDate("room_out")))
+                ) {
+                    log.info("Dates are busy, returning false");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Error in checkCreation", e);
+            throw new DBException("Sorry, cannot check dates, try again", e);
         }
         return true;
     }
@@ -195,7 +216,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
 
             check = new Check();
             rs = ps.getGeneratedKeys();
-            if(rs.next()){
+            if (rs.next()) {
                 check.setCheck_id(rs.getInt(1));
             }
             check.setUser_id(user.getId());
@@ -214,8 +235,8 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
 
     @Override
     public void rollback(Connection con) {
-        if(con != null){
-            try{
+        if (con != null) {
+            try {
                 con.rollback();
             } catch (SQLException e) {
                 log.info("Cannot close connection", e);
@@ -225,7 +246,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
 
     @Override
     public void close(AutoCloseable ac) {
-        if(ac != null){
+        if (ac != null) {
             try {
                 ac.close();
             } catch (Exception e) {

@@ -21,11 +21,12 @@ public class CommandContainer {
         commands.put("showusercheck", new ShowUserCheckCommand());
         commands.put("paycheck", new PayCheckCommand());
         commands.put("createrequest", new CreateRequestCommand());
-        commands.put("showrequests", new ShowRequestsCommand());
         commands.put("editroom", new EditRoomCommand());
-        commands.put("showrequestadmin", new ShowRequestForAdminCommand());
-        commands.put("checkdateadmin", new CheckDateForAdminCommand());
         commands.put("declinerequest", new DeclineRequestCommand());
+        commands.put("confirmrequest", new ConfirmRequestCommand());
+        commands.put("showrequests", new ShowRequestsCommand());
+        commands.put("showrequest", new ShowRequestCommand());
+        commands.put("checkdateadmin", new CheckDateAdminCommand());
     }
     public static Command getCommand(String command){
         return commands.get(command);

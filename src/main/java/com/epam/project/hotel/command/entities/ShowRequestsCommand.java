@@ -2,8 +2,8 @@ package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
 import com.epam.project.hotel.dao.Factory;
+import com.epam.project.hotel.dao.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
-import com.epam.project.hotel.dao.entities.mysql.RequestDAO;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Request;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +18,9 @@ public class ShowRequestsCommand implements Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
         log.info("ShowRequestsCommand#execute");
-        String adress = "admin.jsp";
+        String adress = "requests.jsp";
+        req.getSession().removeAttribute("available");
+
         Factory factory = MySQLFactory.getInstance();
         RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");
         List<Request> requests = requestDAO.findAllRequests();

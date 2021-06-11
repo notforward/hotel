@@ -25,6 +25,7 @@ public interface CheckDAO extends EntityDAO {
     List<Check> findAllUserChecks(User user) throws DBException;
 
     Boolean checkCreation(Date arrival, Date department, int id) throws DBException;
+    Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws DBException;
 
     Check createCheck(User user, Room room, Date arrival, Date departure) throws DBException;
     Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws DBException;

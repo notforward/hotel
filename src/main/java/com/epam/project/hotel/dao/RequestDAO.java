@@ -2,6 +2,7 @@ package com.epam.project.hotel.dao;
 
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Request;
+import com.epam.project.hotel.sql.entities.Room;
 import com.epam.project.hotel.sql.entities.User;
 
 import java.sql.Connection;
@@ -16,6 +17,10 @@ public interface RequestDAO extends EntityDAO{
     String SELECT_REQUEST = "SELECT * FROM request WHERE request_id = ?";
     String SELECT_ALL_REQUESTS = "SELECT * FROM request";
     String UPDATE_REQUEST_STATUS = "UPDATE request SET request_status = ? WHERE request_id = ?";
+    String INSERT_RESPONSE = "INSERT INTO" +
+            " response VALUES (?, ?)";
+    String SELECT_RESPONSE = "SELECT * FROM response WHERE response_request_id = ?";
+
     List<Request> findAllRequests() throws DBException;
 
     Request createRequest(User user, int size, String room_class, Date arrival, Date department) throws DBException;
@@ -24,5 +29,10 @@ public interface RequestDAO extends EntityDAO{
 
     Request extractRequest(ResultSet rs) throws DBException;
 
-    Request updateRequestStatus(Request request, String status);
+    Request createResponse(Connection con, Request request, Room room) throws DBException;
+
+    Request extractResponse(Request request, ResultSet rs) throws DBException;
+
+    Request updateRequestStatus(Request request, String status) throws DBException;
+    Request updateRequestStatus(Connection con, Request request, String status) throws DBException;
 }

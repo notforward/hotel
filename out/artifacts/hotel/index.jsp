@@ -31,7 +31,7 @@
                     <a class="btn btn-dark" href="request.jsp" style="margin-top: 7px">Create Request</a><br>
                 </c:when>
                 <c:when test="${sessionScope.user.get().role == '2'}">
-                    <a class="btn btn-dark" href="controller?command=showrequests" style="margin-top: 7px">Admin Panel</a><br>
+                    <a class="btn btn-dark" href="controller?command=showrequests" style="margin-top: 7px">Requests</a><br>
                 </c:when>
             </c:choose>
             <a class="btn btn-dark" href="controller?command=showrooms" style="margin-top: 7px">Rooms</a><br>

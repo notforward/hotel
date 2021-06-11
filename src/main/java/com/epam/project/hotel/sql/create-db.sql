@@ -4,6 +4,7 @@ USE `hotel_db`;
 
 DROP TABLE IF EXISTS `hotel_db`.`payment_check`;
 DROP TABLE IF EXISTS `hotel_db`.`room_info`;
+DROP TABLE IF EXISTS `hotel_db`.response;
 
 DROP TABLE IF EXISTS `hotel_db`.`request`;
 DROP TABLE IF EXISTS `hotel_db`.`user`;
@@ -33,6 +34,8 @@ CREATE TABLE IF NOT EXISTS `hotel_db`.`user`
             ON UPDATE CASCADE
 );
 
+
+
 CREATE TABLE IF NOT EXISTS `hotel_db`.`request`
 (
     `request_id`         INT                                  NOT NULL AUTO_INCREMENT,
@@ -53,6 +56,17 @@ CREATE TABLE IF NOT EXISTS `hotel_db`.`request`
             ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `hotel_db`.`response`
+(
+    `response_request_id` INT NOT NULL,
+    `room_id`    INT NOT NULL,
+    PRIMARY KEY (`response_request_id`),
+    CONSTRAINT `request_id`
+        FOREIGN KEY (`response_request_id`)
+            REFERENCES `hotel_db`.`request` (`request_id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS `hotel_db`.`room`
 (
@@ -140,3 +154,5 @@ INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, chec
 VALUES (1, 1, '2021-06-11', '2021-06-11', 300, 'PAYED');
 INSERT INTO request(user_id, request_status, request_size, request_class, request_arrival, request_department)
 VALUES (1, 'CREATED', 2, 'LUXURY', '2021-06-09', '2021-06-15');
+INSERT INTO request(user_id, request_status, request_size, request_class, request_arrival, request_department)
+VALUES (2, 'CREATED', 3, 'ECONOM', '2021-06-01', '2021-07-15');
