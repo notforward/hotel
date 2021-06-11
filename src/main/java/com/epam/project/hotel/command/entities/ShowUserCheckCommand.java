@@ -33,7 +33,6 @@ public class ShowUserCheckCommand implements Command {
             con = DataSource.getConnection();
             check = checkDAO.findCheckByID(con, id);
             room = roomDAO.findRoomID(con, check.getRoom_id());
-            roomDAO.extractRoomInfo(room, con);
         } catch (DBException e) {
             throw new DBException("Cannot show check, please try again");
         }

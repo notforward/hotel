@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface RoomDAO extends EntityDAO {
     String FIND_ALL_ROOMS = "SELECT * FROM room";
-    String FIND_ROOM_INFO = "SELECT * FROM room_info WHERE room_id = ?";
     String FIND_ROOM_BY_ID = "SELECT * FROM room WHERE room_id = ?";
     String UPDATE_ROOM_STATUS = "UPDATE room SET room_status = ? WHERE room_id = ?";
 
@@ -21,5 +20,4 @@ public interface RoomDAO extends EntityDAO {
 
     Room updateRoomStatus(Room room, String status) throws DBException;
     Room extractRoom(Connection con, ResultSet rs) throws DBException;
-    void extractRoomInfo(Room room, Connection con) throws DBException;
 }

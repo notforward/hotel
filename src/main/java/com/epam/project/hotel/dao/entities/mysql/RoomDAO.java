@@ -47,7 +47,6 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 room = extractRoom(con, rs);
-                extractRoomInfo(room, con);
             }
         } catch (SQLException e) {
             log.error("Problem in findRoomID", e);
@@ -131,38 +130,18 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             room.setId(rs.getInt("room_id"));
             room.setStatus(rs.getString("room_status"));
             log.info("Room id = " + room.getId());
-            room.setIn(rs.getDate("room_in"));
-            log.info("room in = " + room.getIn());
-            room.setOut(rs.getDate("room_out"));
-            extractRoomInfo(room, con);
+            room.setPrice(rs.getInt("room_price"));
+            room.setSize(rs.getInt("room_size"));
+            room.setRoom_class(rs.getString("room_class"));
+            room.setName(rs.getString("room_name"));
+            room.setDescription(rs.getString("room_description"));
+            room.setPhoto(rs.getString("room_photo"));
+            log.info("room = " + room);
         } catch (SQLException e) {
             log.error("Problem in extracting room");
             throw new DBException("Can not find specified room, try again", e);
         }
         return room;
-    }
-
-    @Override
-    public void extractRoomInfo(Room room, Connection con) throws DBException {
-        log.info("RoomDAO#extractRoomInfo");
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = con.prepareStatement(FIND_ROOM_INFO);
-            ps.setInt(1, room.getId());
-            rs = ps.executeQuery();
-            if(rs.next()){
-                room.setPrice(rs.getInt("room_price"));
-                room.setSize(rs.getInt("room_size"));
-                room.setRoom_class(rs.getString("room_class"));
-                room.setName(rs.getString("room_name"));
-                room.setDescription(rs.getString("room_description"));
-                room.setPhoto(rs.getString("room_photo"));
-            }
-        } catch (SQLException e) {
-            log.error("Problem in extracting room info");
-            throw new DBException("Can not find specified room, try again", e);
-        }
     }
 
     @Override

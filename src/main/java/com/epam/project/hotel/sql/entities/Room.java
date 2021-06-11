@@ -1,13 +1,8 @@
 package com.epam.project.hotel.sql.entities;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class Room implements Entity{
     private int id;
     private String status;
-    private Date in;
-    private Date out;
     private String name;
     private String description;
     private int price;
@@ -20,13 +15,12 @@ public class Room implements Entity{
         return "Room{" +
                 "id=" + id +
                 ", status='" + status + '\'' +
-                ", in='" + in + '\'' +
-                ", out='" + out + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", size=" + size +
                 ", room_class='" + room_class + '\'' +
+                ", photo='" + photo + '\'' +
                 '}';
     }
 
@@ -44,22 +38,6 @@ public class Room implements Entity{
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Date getIn() {
-        return in;
-    }
-
-    public void setIn(Date in) {
-        this.in = in;
-    }
-
-    public Date getOut() {
-        return out;
-    }
-
-    public void setOut(Date out) {
-        this.out = out;
     }
 
     public int getPrice() {
