@@ -112,6 +112,37 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     }
 
     @Override
+    public Request findRequestByUser(Connection con, User user) throws DBException {
+        log.info("#findRequestByUser , user = " + user);
+        PreparedStatement ps;
+        ResultSet rs;
+        Request request = null;
+        try {
+            ps = con.prepareStatement(SELECT_REQUEST_BY_USER_ID);
+            ps.setInt(1, user.getId());
+            rs = ps.executeQuery();
+            if(rs.next()){
+                request = extractRequest(rs);
+                String status = request.getStatus();
+                if(status.equals("MANAGER_ACCEPTED")){
+                    ps = con.prepareStatement(SELECT_RESPONSE);
+                    ps.setInt(1, request.getRequest_id());
+                    log.info("ps = " + ps);
+                    rs = ps.executeQuery();
+                    if(rs.next()){
+                        request = extractResponse(request, rs);
+                    }
+                }
+                log.info("request = " + request);
+            }
+        } catch (SQLException e) {
+            log.error("Problem at findRequestByUser");
+            throw new DBException("Cannot find request, try again", e);
+        }
+        return request;
+    }
+
+    @Override
     public Request extractRequest(ResultSet rs) throws DBException {
         log.info("#extractRequest");
         Request request = new Request();

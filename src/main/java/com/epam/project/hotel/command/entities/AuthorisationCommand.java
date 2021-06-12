@@ -3,7 +3,6 @@ package com.epam.project.hotel.command.entities;
 import com.epam.project.hotel.command.Command;
 import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
-import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
 import com.epam.project.hotel.dao.entities.mysql.UserDAO;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.User;

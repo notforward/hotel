@@ -28,7 +28,7 @@
         <div style="text-align: center">
             <c:choose>
                 <c:when test="${sessionScope.user.get().role == '1'}">
-                    <a class="btn btn-dark" href="request.jsp" style="margin-top: 7px">Create Request</a><br>
+                    <a class="btn btn-dark" href="request.jsp" style="margin-top: 7px">Create request</a><br>
                 </c:when>
                 <c:when test="${sessionScope.user.get().role == '2'}">
                     <a class="btn btn-dark" href="controller?command=showrequests" style="margin-top: 7px">Requests</a><br>

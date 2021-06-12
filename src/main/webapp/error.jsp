@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>ERROR</title>
@@ -11,6 +12,7 @@
 <div style="text-align: center">
     <h1>ERROR!</h1>
     <h1>${sessionScope.error.message}</h1>
+    <a class="btn-lg btn-dark" href="${header.referer}">To last page</a>
 </div>
 </body>
 </html>

@@ -20,12 +20,15 @@ public interface RequestDAO extends EntityDAO{
     String INSERT_RESPONSE = "INSERT INTO" +
             " response VALUES (?, ?)";
     String SELECT_RESPONSE = "SELECT * FROM response WHERE response_request_id = ?";
+    String SELECT_REQUEST_BY_USER_ID = "SELECT * FROM request WHERE user_id = ? ORDER BY request_id DESC LIMIT 1";
 
     List<Request> findAllRequests() throws DBException;
 
     Request createRequest(User user, int size, String room_class, Date arrival, Date department) throws DBException;
 
     Request findRequestByID(Connection con, int id) throws DBException;
+
+    Request findRequestByUser(Connection con, User user) throws DBException;
 
     Request extractRequest(ResultSet rs) throws DBException;
 

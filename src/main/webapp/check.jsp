@@ -28,14 +28,21 @@
     <label class="form-label">Cost: </label>
     <input class="form-control" type="text" placeholder="${check.price}$"
            aria-label="Disabled input price" disabled readonly style="margin: 7px">
-    <c:if test="${check.check_status == 'PAYED'}">
-        <div class="alert alert-success" role="alert" style="margin: 7px">
+</div>
+<c:choose>
+    <c:when test="${check.check_status == 'PAYED'}">
+        <div class="alert alert-success col-md-4" role="alert" style="margin: 7px">
             Congrats! All done!
         </div>
-    </c:if>
-</div>
-<c:if test="${check.check_status != 'PAYED'}">
-    <a class="btn btn-dark" href="controller?command=paycheck" style="margin: 7px">Pay!</a>
-</c:if>
+    </c:when>
+    <c:when test="${check.check_status == 'NOT PAYED'}">
+        <a class="btn btn-dark" href="controller?command=paycheck" style="margin: 7px">Pay!</a>
+    </c:when>
+    <c:when test="${check.check_status == 'TERMINATED'}">
+        <div class="alert alert-danger col-md-4" role="alert" style="margin: 7px">
+            Sorry, these check terminated due time.
+        </div>
+    </c:when>
+</c:choose>
 </body>
 </html>

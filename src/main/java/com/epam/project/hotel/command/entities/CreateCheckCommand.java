@@ -2,10 +2,12 @@ package com.epam.project.hotel.command.entities;
 
 import com.epam.project.hotel.command.Command;
 import com.epam.project.hotel.dao.Factory;
+import com.epam.project.hotel.dao.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.sql.DBException;
 import com.epam.project.hotel.sql.entities.Check;
+import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
 import com.epam.project.hotel.sql.entities.User;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +29,14 @@ public class CreateCheckCommand implements Command {
         Room room = (Room) req.getSession().getAttribute("room");
         Date arrival = (Date) req.getSession().getAttribute("arrival");
         Date departure = (Date) req.getSession().getAttribute("departure");
+        if(req.getSession().getAttribute("request") != null){
+            Factory factory = MySQLFactory.getInstance();
+            RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");
+            Request request = (Request) req.getSession().getAttribute("request");
+            String status = "USER_ACCEPTED";
+            request = requestDAO.updateRequestStatus(request, status);
+            req.getSession().setAttribute("request", request);
+        }
         log.info("Check info:" +
                 "user = " + user +
                 "room = " + room +

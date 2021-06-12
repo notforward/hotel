@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         try {
             ps = con.prepareStatement(SELECT_CHECK_BY_ID);
             ps.setInt(1, id);
+            log.info("ps = " + ps);
             rs = ps.executeQuery();
             if (rs.next()) {
                 check = extractCheck(rs);
@@ -60,16 +62,12 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public Check updateCheckStatus(Check check) throws DBException {
+    public Check updateCheckStatus(Check check, String status) throws DBException {
         log.info("updateCheckStatus + check = " + check);
         Connection con = null;
-        PreparedStatement ps;
         try {
             con = DataSource.getConnection();
-            ps = con.prepareStatement(UPDATE_CHECK_STATUS);
-            ps.setInt(1, check.getCheck_id());
-            log.info("ps = " + ps);
-            ps.executeUpdate();
+            updateCheckStatus(con, check, status);
             con.commit();
         } catch (SQLException e) {
             rollback(con);
@@ -80,6 +78,23 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         }
         check = findCheckByID(check.getCheck_id());
         return check;
+    }
+
+    @Override
+    public void updateCheckStatus(Connection con, Check check, String status) throws DBException {
+        PreparedStatement ps;
+        try {
+            ps = con.prepareStatement(UPDATE_CHECK_STATUS);
+            int k = 1;
+            ps.setString(k++, status);
+            ps.setInt(k, check.getCheck_id());
+            log.info("ps = " + ps);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            log.error("Problem in update check status");
+            throw new DBException("Cannot update check status, please try again");
+        }
+        check = findCheckByID(check.getCheck_id());
     }
 
     @Override
@@ -105,7 +120,30 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         return checks;
     }
 
+    @Override
+    public List<Check> findAllChecks(Connection con) throws DBException {
+        log.info("#findAllChecks");
+        Statement st;
+        ResultSet rs;
+        List<Check> checks;
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(SELECT_ALL_CHECKS);
+            checks = new ArrayList<>();
+            while (rs.next()){
+                checks.add(extractCheck(rs));
+            }
+            log.info("Checks = " + checks);
+        } catch (SQLException e) {
+            log.error("Problem at finding all checks", e);
+            throw new DBException("Cannot find all checks, try again");
+        }
+        return checks;
+    }
+
     private Check extractCheck(ResultSet rs) throws SQLException {
+        log.info("CheckDAO#extractCheck");
+
         Check check = new Check();
 
         check.setCheck_id(rs.getInt("check_id"));
@@ -115,6 +153,8 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         check.setRoom_out(rs.getDate("room_out"));
         check.setPrice(rs.getInt("check_price"));
         check.setCheck_status(rs.getString("check_status"));
+        check.setCheck_creation(rs.getDate("check_creation"));
+        check.setCheck_terminate(rs.getDate("check_terminate"));
 
         return check;
     }
@@ -200,32 +240,35 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     public Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws DBException {
         log.info("CheckDAO#createCheck(with con)");
 
-        Check check;
+        Check check = null;
         PreparedStatement ps;
         ResultSet rs;
         try {
             ps = con.prepareStatement(INSERT_CHECK, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, user.getId());
-            ps.setInt(2, room.getId());
-            ps.setDate(3, (java.sql.Date) arrival);
-            ps.setDate(4, (java.sql.Date) departure);
-            ps.setInt(5, room.getPrice());
-            ps.setString(6, "NOT PAYED");
+            int k = 1;
+            ps.setInt(k++, user.getId());
+            ps.setInt(k++, room.getId());
+            ps.setDate(k++, (java.sql.Date) arrival);
+            ps.setDate(k++, (java.sql.Date) departure);
+            ps.setInt(k++, room.getPrice());
+            ps.setString(k++, "NOT PAYED");
+
+            long millis = System.currentTimeMillis();
+            java.sql.Date today = new java.sql.Date(millis);
+            log.info("Today = " + today);
+            int daysToTerminate = 2;
+
+            LocalDate terminate = LocalDate.now().plusDays(daysToTerminate);
+            ps.setDate(k++, today);
+            ps.setDate(k, java.sql.Date.valueOf(terminate));
             log.info("PreparedStatement = " + ps);
             ps.executeUpdate();
-
-            check = new Check();
+            con.commit();
             rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                check.setCheck_id(rs.getInt(1));
+                check = findCheckByID(rs.getInt(1));
+                log.info("Check = " + check);
             }
-            check.setUser_id(user.getId());
-            check.setRoom_id(room.getId());
-            check.setRoom_in(arrival);
-            check.setRoom_out(departure);
-            check.setPrice(room.getPrice());
-            check.setCheck_status("NOT PAYED");
-            log.info("Check = " + check);
         } catch (SQLException e) {
             log.error("Error in createCheck");
             throw new DBException("Cannot create check, please try again");

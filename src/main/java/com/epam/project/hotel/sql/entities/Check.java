@@ -10,6 +10,8 @@ public class Check implements Entity {
     private Date room_in;
     private Date room_out;
     private String check_status;
+    private Date check_creation;
+    private Date check_terminate;
 
     @Override
     public String toString() {
@@ -21,6 +23,8 @@ public class Check implements Entity {
                 ", room_in=" + room_in +
                 ", room_out=" + room_out +
                 ", check_status='" + check_status + '\'' +
+                ", check_creation=" + check_creation +
+                ", check_terminate=" + check_terminate +
                 '}';
     }
 
@@ -78,5 +82,21 @@ public class Check implements Entity {
 
     public void setCheck_status(String check_status) {
         this.check_status = check_status;
+    }
+
+    public Date getCheck_creation() {
+        return check_creation;
+    }
+
+    public void setCheck_creation(Date check_creation) {
+        this.check_creation = check_creation;
+    }
+
+    public Date getCheck_terminate() {
+        return check_terminate;
+    }
+
+    public void setCheck_terminate(Date check_terminate) {
+        this.check_terminate = check_terminate;
     }
 }

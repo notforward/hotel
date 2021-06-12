@@ -21,7 +21,7 @@ public class PayCheckCommand implements Command {
         Factory factory = MySQLFactory.getInstance();
         CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
         Check check = (Check) req.getSession().getAttribute("check");
-        check = checkDAO.updateCheckStatus(check);
+        check = checkDAO.updateCheckStatus(check, "PAYED");
         log.info("Check = " + check);
         req.getSession().setAttribute("check", check);
         return adress;

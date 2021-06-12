@@ -28,6 +28,7 @@
            aria-label="Disabled input password" disabled readonly>
     <c:if test="${sessionScope.user.get().role == '1'}">
         <a class="btn btn-dark" href="controller?command=showuserchecks" style="margin-top: 7px" aria-disabled="true">All yours checks</a>
+        <a class="btn btn-dark" href="controller?command=showuserrequest" style="margin-top: 7px">Show my last request</a>
     </c:if>
 </div>
 </body>

@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `hotel_db`.`request`
     `user_id`            INT                                  NOT NULL,
     `request_status`     ENUM ('CREATED',
         'MANAGER_ACCEPTED', 'USER_ACCEPTED',
-        'MANAGER_DECLINED', 'USER_DECLINED')                  NOT NULL,
+        'MANAGER_DECLINED')                  NOT NULL,
     `request_size`       INT                                  NOT NULL,
     `request_class`      ENUM ('ECONOM', 'PREMIUM', 'LUXURY') NOT NULL,
     `request_arrival`    DATE                                 NOT NULL,
@@ -84,13 +84,15 @@ CREATE TABLE IF NOT EXISTS `hotel_db`.`room`
 
 CREATE TABLE IF NOT EXISTS `hotel_db`.`payment_check`
 (
-    `check_id`     INT AUTO_INCREMENT          NOT NULL,
-    `user_id`      INT                         NOT NULL,
-    `room_id`      INT                         NOT NULL,
-    `room_in`      DATE                        NOT NULL,
-    `room_out`     DATE                        NOT NULL,
-    `check_price`  INT                         NOT NULL,
-    `check_status` ENUM ('NOT PAYED', 'PAYED') NOT NULL,
+    `check_id`        INT AUTO_INCREMENT                        NOT NULL,
+    `user_id`         INT                                       NOT NULL,
+    `room_id`         INT                                       NOT NULL,
+    `room_in`         DATE                                      NOT NULL,
+    `room_out`        DATE                                      NOT NULL,
+    `check_price`     INT                                       NOT NULL,
+    `check_status`    ENUM ('NOT PAYED', 'PAYED', 'TERMINATED') NOT NULL,
+    `check_creation`  DATE                                      NOT NULL,
+    `check_terminate` DATE                                      NOT NULL,
     PRIMARY KEY (`check_id`),
     INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
     INDEX `room_id_idx` (`room_id` ASC) VISIBLE,
@@ -123,12 +125,12 @@ VALUES ('FREE', 'Family Sea View Room', 300, 'Family Sea View Room description',
         'static/FamilyRoomSeaView.jpg');
 INSERT INTO room (room_status, room_name, room_price, room_description, room_size, room_class, room_photo)
 VALUES ('FREE', 'Presidential Room', 500, 'Presidential Room description', 2, 'VIP', 'static/PresidentialRoom.jpg');
-INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status)
-VALUES (1, 1, '2021-06-01', '2021-06-10', 500, 'PAYED');
-INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status)
-VALUES (2, 1, '2021-06-15', '2021-06-23', 300, 'PAYED');
-INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status)
-VALUES (1, 1, '2021-06-11', '2021-06-11', 300, 'PAYED');
+INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status, check_creation, check_terminate)
+VALUES (1, 1, '2021-06-01', '2021-06-10', 500, 'PAYED', '2021-06-01', '2021-06-03');
+INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status, check_creation, check_terminate)
+VALUES (2, 1, '2021-06-15', '2021-06-23', 300, 'PAYED', '2021-06-11', '2021-06-13');
+INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status, check_creation, check_terminate)
+VALUES (1, 1, '2021-06-11', '2021-06-11', 300, 'PAYED','2021-06-12', '2021-06-13');
 INSERT INTO request(user_id, request_status, request_size, request_class, request_arrival, request_department)
 VALUES (1, 'CREATED', 2, 'LUXURY', '2021-06-09', '2021-06-15');
 INSERT INTO request(user_id, request_status, request_size, request_class, request_arrival, request_department)
