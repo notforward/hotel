@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class ShowUserRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowUserRequestCommand.class);
@@ -34,7 +33,7 @@ public class ShowUserRequestCommand implements Command {
         Room room;
         Connection con = null;
         try {
-            user = ((Optional<User>) req.getSession().getAttribute("user")).get();
+            user = (User) req.getSession().getAttribute("user");
             con = DataSource.getConnection();
             request = requestDAO.findRequestByUser(con, user);
             room = roomDAO.findRoomID(con, request.getRoom_id());

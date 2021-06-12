@@ -2,7 +2,9 @@ package com.epam.project.hotel.command;
 
 import com.epam.project.hotel.command.entities.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommandContainer {
@@ -28,6 +30,47 @@ public class CommandContainer {
         commands.put("showrequest", new ShowRequestCommand());
         commands.put("checkdateadmin", new CheckDateAdminCommand());
         commands.put("showuserrequest", new ShowUserRequestCommand());
+        commands.put("showprofile", new ShowProfileCommand());
+    }
+    public static List<String> getUserCommands(){
+        List<String> links = new ArrayList<>();
+        links.add("showrooms");
+        links.add("showroom");
+        links.add("logout");
+        links.add("bookroom");
+        links.add("createcheck");
+        links.add("showuserchecks");
+        links.add("showusercheck");
+        links.add("checkdate");
+        links.add("paycheck");
+        links.add("createrequest");
+        links.add("showuserrequest");
+        links.add("showprofile");
+        return links;
+    }
+    public static List<String> getManagerCommands(){
+        List<String> links = new ArrayList<>();
+        links.add("showrooms");
+        links.add("showroom");
+        links.add("logout");
+        links.add("checkdateadmin");
+        links.add("showuserrequest");
+        links.add("declinerequest");
+        links.add("confirmrequest");
+        links.add("showrequests");
+        links.add("editroom");
+        links.add("showrequest");
+        links.add("showprofile");
+        return links;
+    }
+    public static List<String> getUnknownCommands(){
+        List<String> links = new ArrayList<>();
+        links.add("login");
+        links.add("register");
+        links.add("showrooms");
+        links.add("showroom");
+        links.add("showprofile");
+        return links;
     }
     public static Command getCommand(String command){
         return commands.get(command);

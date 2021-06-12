@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 public class AuthorisationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AuthorisationCommand.class);
@@ -27,14 +26,14 @@ public class AuthorisationCommand implements Command {
         logger.info("login = " + login);
         Factory factory = MySQLFactory.getInstance();
         UserDAO userDAO = (UserDAO) factory.getDAO("UserDAO");
-        Optional<User> user = userDAO.findUserLOG(login);
-        if(!user.isPresent()){
+        User user = userDAO.findUserLOG(login);
+        if(user == null){
             throw new DBException("User did not found, try again"   );
         }
-        if(!user.get().getPassword().equals(password)){
+        if(!user.getPassword().equals(password)){
             throw new DBException("Wrong password, try again");
         }
-        logger.info("User = " + user.get());
+        logger.info("User = " + user);
         req.getSession().setAttribute("user", user);
 
         long millis = System.currentTimeMillis();

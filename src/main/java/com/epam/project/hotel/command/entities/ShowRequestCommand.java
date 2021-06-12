@@ -26,7 +26,7 @@ public class ShowRequestCommand implements Command {
         log.info("ShowRequestCommand#execute");
         String adress = "request-admin.jsp";
         int request_id = Integer.parseInt(req.getParameter("request_id"));
-        Factory factory = MySQLFactory.getInstance();;
+        Factory factory = MySQLFactory.getInstance();
         RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");;
         Connection con = null;
         Request request;

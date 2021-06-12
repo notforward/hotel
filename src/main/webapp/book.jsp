@@ -9,7 +9,7 @@
 </head>
 <body>
 <div style="text-align: right">
-    <a href="index.jsp" class="btn btn-dark">To menu</a>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-dark">To menu</a>
 </div>
 <h1>Please, check information below and confirm purchase</h1><br>
 <div class="col-md-5" style="margin: 5px">

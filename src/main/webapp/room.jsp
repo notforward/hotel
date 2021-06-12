@@ -9,7 +9,7 @@
 </head>
 <body>
 <div style="text-align: right">
-    <a class="btn btn-dark" href="index.jsp">To menu</a>
+    <a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp">To menu</a>
 </div>
 <div class="container">
     <div class="row">
@@ -40,13 +40,13 @@
                            aria-label="Disabled input description"
                            disabled readonly>
                     <label class="form-label"> Room status: </label>
-                    <c:if test="${sessionScope.user.get().role != '2'}">
+                    <c:if test="${sessionScope.user.role != '2'}">
                         <input class="form-control" type="text" placeholder="${room.status}"
                                aria-label="Disabled input status"
                                disabled readonly
                                value="${room.status}">
                     </c:if>
-                    <c:if test="${sessionScope.user.get().role == '2'}">
+                    <c:if test="${sessionScope.user.role == '2'}">
                         <form method="post" action="controller">
                             <input type="hidden" name="command" value="editroom">
                             <select class="form-select" id="class" name="status" required>
@@ -64,7 +64,7 @@
                             <a class="btn btn-dark" href="authorization.jsp" style="margin-top: 7px">Log In to book a
                                 room</a>
                         </c:when>
-                        <c:when test="${sessionScope.user.get().role == '1' && sessionScope.room.status != 'UNAVAILABLE'}">
+                        <c:when test="${sessionScope.user.role == '1' && sessionScope.room.status != 'UNAVAILABLE'}">
                             <form action="controller" method="post" style="margin-top: 15px">
                                 <input type="hidden" name="command" value="bookroom">
                                 <input type="submit" class="btn-lg btn-dark" value="Book">

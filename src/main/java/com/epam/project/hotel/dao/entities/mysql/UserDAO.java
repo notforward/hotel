@@ -12,31 +12,32 @@ import java.util.Optional;
 
 public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
     private static final Logger log = LogManager.getLogger(UserDAO.class);
-    protected UserDAO(){
+
+    protected UserDAO() {
 
     }
+
     @Override
-    public Optional<User> createUser(String login, String password, String email) throws DBException {
+    public User createUser(String login, String password, String email) throws DBException {
         log.info("UserDAO#createUser(Login, pass, email)");
         Connection con = DataSource.getConnection();
-        Optional<User> user;
+        User user;
         try {
-             user = createUser(con, login, password, email);
-             log.info("Email of user = " + user.get().getEmail());
-        } catch (DBException e){
+            user = createUser(con, login, password, email);
+            log.info("Email of user = " + user.getEmail());
+        } catch (DBException e) {
             log.error("Error in create user", e);
             throw new DBException("Cannot create user, try again", e);
-        }
-        finally {
+        } finally {
             close(con);
         }
         return user;
     }
 
     @Override
-    public Optional<User> createUser(Connection con, String login, String password, String email) throws DBException {
+    public User createUser(Connection con, String login, String password, String email) throws DBException {
         log.info("UserDAO#createUser(Con, login, pass, email)");
-        Optional<User> user;
+        User user;
         PreparedStatement ps;
         try {
             ps = con.prepareStatement(INSERT_USER);
@@ -55,24 +56,24 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
     }
 
     @Override
-    public Optional<User> findUserID(int id) throws DBException {
+    public User findUserID(int id) throws DBException {
         log.info("UserDAO#findUserID(id)");
         Connection con = DataSource.getConnection();
-        Optional<User> user;
+        User user;
         try {
             user = findUserID(con, id);
             log.info("ID of user = " + id);
-        } catch (DBException e){
+        } catch (DBException e) {
             log.error("Error in find user by ID", e);
             throw new DBException("Cannot find selected user, try again", e);
-        }
-        finally {
+        } finally {
             close(con);
         }
         return user;
     }
+
     @Override
-    public Optional<User> findUserID(Connection con, int id) throws DBException {
+    public User findUserID(Connection con, int id) throws DBException {
         log.info("UserDAO#findUserID(Con, id)");
         PreparedStatement ps;
         ResultSet rs;
@@ -82,7 +83,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
             ps = con.prepareStatement(FIND_USER_BY_ID);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 user = extractUser(rs);
             }
 
@@ -90,29 +91,28 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
             log.error("Error in findUserLOG", e);
             throw new DBException("Cannot find user by ID, try again", e);
         }
-        return Optional.ofNullable(user);
+        return user;
     }
 
     @Override
-    public Optional<User> findUserLOG(String login) throws DBException {
+    public User findUserLOG(String login) throws DBException {
         log.info("UserDAO#findUserLOG");
         Connection con = DataSource.getConnection();
-        Optional<User> user;
+        User user;
         try {
             user = findUserLOG(con, login);
             log.info("Login of user = " + login);
-        } catch (DBException e){
+        } catch (DBException e) {
             log.error("Error in find user by LOGIN", e);
             throw new DBException("Cannot find selected user, try again", e);
-        }
-        finally {
+        } finally {
             close(con);
         }
         return user;
     }
 
     @Override
-    public Optional<User> findUserLOG(Connection con, String login) throws DBException {
+    public User findUserLOG(Connection con, String login) throws DBException {
         log.info("UserDAO#findUserLOG(Con, log)");
         PreparedStatement ps;
         ResultSet rs;
@@ -122,18 +122,17 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
             ps = con.prepareStatement(FIND_USER_BY_LOGIN);
             ps.setString(1, login);
             rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 user = extractUser(rs);
             }
             con.commit();
         } catch (SQLException e) {
             log.error("Error in findUserLOG", e);
             throw new DBException("Cannot find user by ID, try again", e);
-        }
-        finally {
+        } finally {
             close(con);
         }
-        return Optional.ofNullable(user);
+        return user;
     }
 
     @Override
@@ -156,8 +155,8 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
 
     @Override
     public void rollback(Connection con) {
-        if(con != null){
-            try{
+        if (con != null) {
+            try {
                 con.rollback();
             } catch (SQLException e) {
                 log.info("Cannot close connection", e);
@@ -167,7 +166,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
 
     @Override
     public void close(AutoCloseable ac) {
-        if(ac != null){
+        if (ac != null) {
             try {
                 ac.close();
             } catch (Exception e) {

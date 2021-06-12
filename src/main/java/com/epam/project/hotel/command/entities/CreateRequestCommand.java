@@ -30,7 +30,7 @@ public class CreateRequestCommand implements Command {
             throw new DBException("Check your dates and try again, please");
         }
         log.info("arrival = " + arrival + " department = " + department);
-        User user = ((Optional<User>) req.getSession().getAttribute("user")).get();
+        User user = (User) req.getSession().getAttribute("user");
         Factory factory = MySQLFactory.getInstance();
         RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");
         Request request = requestDAO.createRequest(user, size, room_class, arrival, department);

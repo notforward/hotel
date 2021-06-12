@@ -8,7 +8,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<a class="btn btn-dark" href="index.jsp">To menu</a><br>
+<a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp">To menu</a><br>
 <H4>Your request: </H4>
 <div style="margin: 7px">
     <label class="form-label">Request id:

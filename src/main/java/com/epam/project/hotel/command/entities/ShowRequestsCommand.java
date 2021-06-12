@@ -19,13 +19,30 @@ public class ShowRequestsCommand implements Command {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
         log.info("ShowRequestsCommand#execute");
         String adress = "requests.jsp";
-        req.getSession().removeAttribute("available");
+        int page = Integer.parseInt(
+                req.getParameter("page"));
+        int pageSize = 6;
 
         Factory factory = MySQLFactory.getInstance();
         RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");
-        List<Request> requests = requestDAO.findAllRequests();
-        log.info("requests = " + requests);
+        List<Request> requests = requestDAO.findRequests((page - 1) * pageSize, pageSize);
+
+        int roomsSize = requestDAO.findRequestsSize();
+        int pages = (int) Math.ceil(roomsSize * 1.0 / pageSize);
+        int minPagePossible = Math.max(page, 1);
+        int maxPagePossible = Math.min(page, pages);
+        log.info("Requests = " + requests +
+                " pages = " + pages + " room size = " + roomsSize
+                + " minPossible" + minPagePossible + " max possible" + maxPagePossible);
+
+        req.setAttribute("requests", requests);
+        req.setAttribute("pages", pages);
+        req.setAttribute("page", page);
+        req.setAttribute("pageSize", pageSize);
+        req.setAttribute("minPossiblePage", minPagePossible);
+        req.setAttribute("maxPossiblePage", maxPagePossible);
         req.getSession().setAttribute("requests", requests);
+        req.getSession().removeAttribute("available");
         return adress;
     }
 }

@@ -19,16 +19,21 @@ public interface CheckDAO extends EntityDAO {
     String SELECT_CHECK_BY_ID = "SELECT * FROM payment_check WHERE payment_check.check_id = ?";
     String UPDATE_CHECK_STATUS = "UPDATE payment_check SET check_status=? WHERE check_id=?";
     String SELECT_ALL_CHECKS = "SELECT * FROM payment_check";
+    String SELECT_ROOMS = "SELECT * FROM payment_check LIMIT ? OFFSET ?";
+    String FIND_SIZE = "SELECT COUNT(*) FROM payment_check";
 
     Check findCheckByID(int id) throws DBException;
     Check findCheckByID(Connection con, int id) throws DBException;
 
     Check updateCheckStatus(Check check, String status) throws DBException;
-    void updateCheckStatus(Connection con, Check check, String status) throws DBException;
+    Check updateCheckStatus(Connection con, Check check, String status) throws DBException;
 
     List<Check> findAllUserChecks(User user) throws DBException;
 
     List<Check> findAllChecks(Connection con) throws DBException;
+    List<Check> findChecks(int offset, int limit) throws DBException;
+
+    int findChecksSize() throws DBException;
 
     Boolean checkCreation(Date arrival, Date department, int id) throws DBException;
     Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws DBException;

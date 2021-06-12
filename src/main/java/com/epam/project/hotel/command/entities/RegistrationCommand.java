@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 public class RegistrationCommand implements Command {
     private static final Logger log = LogManager.getLogger(RegistrationCommand.class);
@@ -23,13 +22,9 @@ public class RegistrationCommand implements Command {
         String password = req.getParameter("password");
         String email = req.getParameter("email");
 
-        if("".equals(login) || "".equals(password) || "".equals(email)){
-            throw new DBException("Fill all data spaces, please");
-        }
-
         Factory factory = MySQLFactory.getInstance();
         UserDAO userDAO = (UserDAO) factory.getDAO("UserDAO");
-        Optional<User> user;
+        User user;
         try {
             user = userDAO.createUser(login, password, email);
         }

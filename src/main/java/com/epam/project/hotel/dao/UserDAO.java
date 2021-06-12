@@ -14,14 +14,14 @@ public interface UserDAO extends EntityDAO {
     String FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE user_login = ?";
     String INSERT_USER = "INSERT INTO user(user_login, user_password, user_email, role_id) values (?, ?, ?, 1);";
 
-    Optional<User> createUser(String login, String password, String email) throws DBException;
-    Optional<User> createUser(Connection con, String login, String password, String email) throws DBException;
+    User createUser(String login, String password, String email) throws DBException;
+    User createUser(Connection con, String login, String password, String email) throws DBException;
 
-    Optional<User> findUserID(int id) throws DBException;
-    Optional<User> findUserID(Connection con, int id) throws DBException;
+    User findUserID(int id) throws DBException;
+    User findUserID(Connection con, int id) throws DBException;
 
-    Optional<User> findUserLOG(String login) throws DBException;
-    Optional<User> findUserLOG(Connection con, String login) throws DBException;
+    User findUserLOG(String login) throws DBException;
+    User findUserLOG(Connection con, String login) throws DBException;
     User extractUser(ResultSet rs) throws SQLException;
 
     boolean checkPass(User user);

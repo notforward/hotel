@@ -35,6 +35,10 @@ public class MainServlet extends HttpServlet {
             req.getSession().setAttribute("error", e);
         }
         logger.info("forwarded to " + adress);
+        if(adress.equals("index.jsp")){
+            req.getRequestDispatcher(adress).forward(req, resp);
+        }
+        // "/WEB-INF/jsp/" + adress
         req.getRequestDispatcher(adress).forward(req, resp);
     }
 
@@ -53,6 +57,10 @@ public class MainServlet extends HttpServlet {
             req.getSession().setAttribute("error", e);
         }
         logger.info("redirected to " + adress);
+        if(adress.equals("index.jsp")){
+            resp.sendRedirect(adress);
+        }
+        // "/WEB-INF/jsp/" + adress
         resp.sendRedirect(adress);
     }
 }

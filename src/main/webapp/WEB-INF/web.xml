@@ -5,6 +5,12 @@
          version="4.0">
     <request-character-encoding>UTF-8</request-character-encoding>
     <response-character-encoding>UTF-8</response-character-encoding>
-
-
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error-403.jsp</location>
+    </error-page>
+    <filter-mapping>
+        <filter-name>AppFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
 </web-app>

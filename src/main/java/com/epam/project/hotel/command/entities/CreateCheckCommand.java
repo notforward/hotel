@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.Optional;
 
 public class CreateCheckCommand implements Command {
     private static final Logger log = LogManager.getLogger(CreateCheckCommand.class);
@@ -24,8 +23,7 @@ public class CreateCheckCommand implements Command {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
         log.info("CreateCheckCommand#execute");
         String adress = "check.jsp";
-        User user = ((Optional<User>) req.getSession().getAttribute("user"))
-                .get();
+        User user = (User) req.getSession().getAttribute("user");
         Room room = (Room) req.getSession().getAttribute("room");
         Date arrival = (Date) req.getSession().getAttribute("arrival");
         Date departure = (Date) req.getSession().getAttribute("departure");

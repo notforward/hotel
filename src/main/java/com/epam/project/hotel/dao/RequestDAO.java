@@ -21,8 +21,14 @@ public interface RequestDAO extends EntityDAO{
             " response VALUES (?, ?)";
     String SELECT_RESPONSE = "SELECT * FROM response WHERE response_request_id = ?";
     String SELECT_REQUEST_BY_USER_ID = "SELECT * FROM request WHERE user_id = ? ORDER BY request_id DESC LIMIT 1";
+    String SELECT_REQUESTS = "SELECT * FROM request LIMIT ? OFFSET ?";
+    String FIND_SIZE = "SELECT COUNT(*) FROM request";
 
     List<Request> findAllRequests() throws DBException;
+
+    List<Request> findRequests(int offset, int limit) throws DBException;
+
+    int findRequestsSize() throws DBException;
 
     Request createRequest(User user, int size, String room_class, Date arrival, Date department) throws DBException;
 

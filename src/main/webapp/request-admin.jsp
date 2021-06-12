@@ -8,7 +8,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<a class="btn btn-dark" href="controller?command=showrequests">To requests</a>
+<a class="btn btn-dark" href="controller?command=showrequests&page=1">To requests</a>
 <div style="margin: 7px">
     <label class="form-label">Request id:
         <input class="form-control" type="text" placeholder="${request.request_id}"

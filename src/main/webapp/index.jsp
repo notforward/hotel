@@ -14,12 +14,12 @@
         <h1>Welcome to Artem's Hotel!</h1><br/>
         <div style="text-align: right">
             <c:choose>
-                <c:when test="${user.isPresent()}">
-                    <h5>You logged as : ${user.get().login}</h5>
-                    <a class="btn btn-dark" href="profile.jsp">To user profile</a><br>
+                <c:when test="${user != null}">
+                    <h5>You logged as : ${user.login}</h5>
+                    <a class="btn btn-dark" href="controller?command=showprofile">To user profile</a><br>
                     <a class="btn btn-dark" href="controller?command=logout" style="margin-top: 7px">Log out</a>
                 </c:when>
-                <c:when test="${!user.isPresent()}">
+                <c:when test="${user == null}">
                     <a class="btn btn-dark" href="authorization.jsp">Log In</a><br/>
                     <a class="btn btn-dark" href="registration.jsp" style="margin-top: 7px">Registration</a>
                 </c:when>
@@ -27,15 +27,14 @@
         </div>
         <div style="text-align: center">
             <c:choose>
-                <c:when test="${sessionScope.user.get().role == '1'}">
+                <c:when test="${sessionScope.user.role == '1'}">
                     <a class="btn btn-dark" href="request.jsp" style="margin-top: 7px">Create request</a><br>
                 </c:when>
-                <c:when test="${sessionScope.user.get().role == '2'}">
-                    <a class="btn btn-dark" href="controller?command=showrequests" style="margin-top: 7px">Requests</a><br>
+                <c:when test="${sessionScope.user.role == '2'}">
+                    <a class="btn btn-dark" href="controller?command=showrequests&page=1" style="margin-top: 7px">Requests</a><br>
                 </c:when>
             </c:choose>
-            <a class="btn btn-dark" href="controller?command=showrooms" style="margin-top: 7px">Rooms</a><br>
-            <a class="btn btn-dark" href="features.jsp" style="margin-top: 7px">Features</a><br>
+            <a class="btn btn-dark" href="controller?command=showrooms&page=1" style="margin-top: 7px">Rooms</a><br>
             <a class="btn btn-dark" href="info.jsp" style="margin-top: 7px">About us</a>
         </div>
     </div>

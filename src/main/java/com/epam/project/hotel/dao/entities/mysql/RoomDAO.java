@@ -94,6 +94,66 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         return rooms;
     }
 
+
+
+    @Override
+    public List<Room> findRooms(int offset, int limit) throws DBException {
+        log.info("#findRooms offset = " + offset + " limit = " + limit);
+        Connection con = null;
+        PreparedStatement ps;
+        ResultSet rs;
+        List<Room> rooms;
+        try {
+            con = DataSource.getConnection();
+            ps = con.prepareStatement(SELECT_ROOMS);
+            int k = 1;
+            ps.setInt(k++, limit);
+            ps.setInt(k, offset);
+            log.info("ps = " + ps);
+            rs = ps.executeQuery();
+            rooms = new ArrayList<>();
+            while(rs.next()){
+                rooms.add(extractRoom(con, rs));
+            }
+            con.commit();
+            log.info("rooms = " + rooms);
+        } catch (SQLException e) {
+            rollback(con);
+            log.error("Problem findRooms");
+            throw new DBException("Cannot find rooms, try again");
+        }
+        finally {
+            close(con);
+        }
+        return rooms;
+    }
+
+    @Override
+    public int findRoomsSize() throws DBException {
+        log.info("#findRoomsSize");
+        Connection con = null;
+        Statement st;
+        ResultSet rs;
+        int size = 0;
+        try {
+            con = DataSource.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(FIND_SIZE);
+            if(rs.next()){
+                size = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            rollback(con);
+            log.error("Problem findRooms");
+            throw new DBException("Cannot find rooms, try again");
+        }
+        finally {
+            close(con);
+        }
+        log.info("size = " + size);
+        return size;
+    }
+
     @Override
     public Room updateRoomStatus(Room room, String status) throws DBException {
         log.info("RoomDAO#updateRoomStatus(-)");
