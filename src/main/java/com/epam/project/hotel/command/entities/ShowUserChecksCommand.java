@@ -26,8 +26,11 @@ public class ShowUserChecksCommand implements Command {
         int pageSize = 6;
         Factory factory = MySQLFactory.getInstance();
         CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
-        List<Check> checks = checkDAO.findChecks((page - 1) * pageSize, pageSize);
-
+        User user = (User) req.getSession().getAttribute("user");
+        List<Check> checks = checkDAO.findChecks((page - 1) * pageSize, pageSize, user.getId());
+        if(checks.size() == 0){
+            throw new DBException("You have not any checks, book room to get one!");
+        }
         int roomsSize = checkDAO.findChecksSize();
         int pages = (int) Math.ceil(roomsSize * 1.0 / pageSize);
         int minPagePossible = Math.max(page, 1);

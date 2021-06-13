@@ -11,7 +11,10 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ShowRoomsCommand implements Command {
     private static final int shift = 0;
@@ -20,14 +23,25 @@ public class ShowRoomsCommand implements Command {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
         log.info("ShowRoomsCommand#execute");
         String adress = "rooms.jsp";
-        int page = Integer.parseInt(
-                req.getParameter("page"));
+        int page;
+        if(req.getParameter("page") == null){
+            page = 1;
+        } else {
+            page = Integer.parseInt(
+                    req.getParameter("page"));
+        }
         int pageSize = 3;
-
         Factory factory = MySQLFactory.getInstance();
         RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
-        List<Room> rooms = roomDAO.findRooms((page - 1) * pageSize, pageSize);
-
+        List<Room> rooms;
+        String sortBy = String.valueOf(
+                req.getSession().getAttribute("sortBy"));
+        if(req.getSession().getAttribute("sortBy") == null){
+            log.info("sortby == null");
+            sortBy = "price";
+        }
+        log.info("sort by=" + sortBy);
+        rooms = roomDAO.findRooms((page - 1) * pageSize, pageSize, sortBy);
         int roomsSize = roomDAO.findRoomsSize();
         int pages = (int) Math.ceil(roomsSize * 1.0 / pageSize);
         int minPagePossible = Math.max(page - shift, 1);

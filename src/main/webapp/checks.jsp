@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="resources"/>
 <html>
 <head>
     <title>Rooms</title>
@@ -8,20 +13,18 @@
           crossorigin="anonymous">
 </head>
 <body>
-<a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp">To menu</a>
-<h1>Your checks:</h1>
-<h4>Page: ${requestScope.page} of ${requestScope.pages}</h4>
+<a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp"><fmt:message key="auth.to_menu"/></a>
+<h1><fmt:message key="checks.checks"/></h1>
 <hr>
 <c:choose>
     <c:when test="${page - 1 > 0}">
-        <a href="controller?command=showuserchecks&page=${page-1}">Previous</a>
+        <a href="controller?command=showuserchecks&page=${page-1}"><fmt:message key="checks.previous"/></a>
     </c:when>
     <c:otherwise>
-        Previous
+        <fmt:message key="checks.previous"/>
     </c:otherwise>
 </c:choose>
-
-
+|
 <c:forEach var="p" begin="${minPossiblePage}" end="${maxPossiblePage}">
     <c:choose>
         <c:when test="${page == p}">${p}</c:when>
@@ -30,18 +33,16 @@
         </c:otherwise>
     </c:choose>
 </c:forEach>
-
+|
 <c:choose>
     <c:when test="${page + 1 <= pages}">
-        <a href="controller?command=showuserchecks&page=${page+1}">Next</a>
+        <a href="controller?command=showuserchecks&page=${page+1}"><fmt:message key="checks.next"/></a>
     </c:when>
     <c:otherwise>
-        Next
+        <fmt:message key="checks.next"/>
     </c:otherwise>
 </c:choose>
-
 |
-
 <form action="controller" style='display:inline;'>
     <input name="command" value="showuserchecks" type="hidden"/>
     <select name="page">
@@ -49,7 +50,7 @@
             <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>
         </c:forEach>
     </select>
-    <input type="submit" value="Go"/>
+    <input type="submit" value="<fmt:message key="checks.go"/>"/>
 </form>
 
 <hr>
@@ -60,17 +61,18 @@
                 <c:forEach var="check" items="${checks}">
                     <div class="card col-12 col-sm-6 col-md-4 col-lg-3" style="margin: 3rem">
                         <div class="card-body">
-                            <h5 class="card-title">Check id: #${check.check_id}</h5>
+                            <h5 class="card-title"><fmt:message key="checks.check_id"/> #${check.check_id}</h5>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Check information:</li>
-                                <li class="list-group-item">Price: ${check.price}</li>
-                                <li class="list-group-item">Status: ${check.check_status}</li>
-                                <li class="list-group-item">Creation date: ${check.check_creation}</li>
+                                <li class="list-group-item"><fmt:message key="checks.check_info"/>:</li>
+                                <li class="list-group-item"><fmt:message key="book.cost"/>: ${check.price}</li>
+                                <li class="list-group-item"><fmt:message
+                                        key="checks.status"/>: ${check.check_status}</li>
+                                <li class="list-group-item"><fmt:message
+                                        key="checks.creation_date"/>: ${check.check_creation}</li>
                             </ul>
                             <a href="controller?command=showusercheck&id=${check.check_id}" class="btn btn-dark">
-                                Detailed information and payment</a>
+                                <fmt:message key="checks.details"/></a>
                         </div>
-
                     </div>
                 </c:forEach>
             </div>

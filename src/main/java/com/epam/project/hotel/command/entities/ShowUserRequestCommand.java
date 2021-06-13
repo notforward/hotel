@@ -36,6 +36,9 @@ public class ShowUserRequestCommand implements Command {
             user = (User) req.getSession().getAttribute("user");
             con = DataSource.getConnection();
             request = requestDAO.findRequestByUser(con, user);
+            if(request == null){
+                throw new DBException("You have not any requests, create one!");
+            }
             room = roomDAO.findRoomID(con, request.getRoom_id());
             log.info("request = " + request + " room = " + room + " user = " + user);
             con.commit();

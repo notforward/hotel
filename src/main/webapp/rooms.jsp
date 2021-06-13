@@ -1,6 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="resources"/>
+<html lang="${locale}">
 <head>
     <title>Rooms</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
@@ -8,34 +13,41 @@
           crossorigin="anonymous">
 </head>
 <body>
-<a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp">To menu</a>
-<h1>List of our rooms, choose one please:</h1>
-<h4>Page: ${requestScope.page} of ${requestScope.pages}</h4><hr>
+<a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp"><fmt:message key="auth.to_menu"/></a>
+<div style="margin: 7px">
+    <a class="btn-sm btn-dark" href="controller?command=sortby&orderBy=price"><fmt:message key="rooms.order_price"/></a>
+    <a class="btn-sm btn-dark" href="controller?command=sortby&orderBy=size"><fmt:message key="rooms.order_size"/></a>
+    <a class="btn-sm btn-dark" href="controller?command=sortby&orderBy=class"><fmt:message key="rooms.order_class"/></a>
+    <a class="btn-sm btn-dark" href="controller?command=sortby&orderBy=status"><fmt:message key="rooms.order_status"/></a>
+</div>
 <c:choose>
     <c:when test="${page - 1 > 0}">
-        <a href="controller?command=showrooms&page=${page-1}">Previous</a>
+        <a href="controller?command=showrooms&page=${page-1}"><fmt:message key="checks.previous"/></a>
     </c:when>
     <c:otherwise>
-        Previous
+        <fmt:message key="checks.previous"/>
     </c:otherwise>
 </c:choose>
 
+|
 
 <c:forEach var="p" begin="${minPossiblePage}" end="${maxPossiblePage}">
     <c:choose>
         <c:when test="${page == p}">${p}</c:when>
         <c:otherwise>
-            <a href="controller?command=showrooms&page=${p}">${p}</a>
+            <a href="controller?command=showrooms&page=${p}">${p}?</a>
         </c:otherwise>
     </c:choose>
 </c:forEach>
 
+|
+
 <c:choose>
     <c:when test="${page + 1 <= pages}">
-        <a href="controller?command=showrooms&page=${page+1}">Next</a>
+        <a href="controller?command=showrooms&page=${page+1}"><fmt:message key="checks.next"/></a>
     </c:when>
     <c:otherwise>
-        Next
+        <fmt:message key="checks.next"/>
     </c:otherwise>
 </c:choose>
 
@@ -48,7 +60,7 @@
             <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>
         </c:forEach>
     </select>
-    <input type="submit" value="Go"/>
+    <input type="submit" value="<fmt:message key="checks.go"/>"/>
 </form>
 
 <hr>
@@ -63,15 +75,17 @@
                             <h5 class="card-title">${room.name}</h5>
                             <p class="card-text">${room.description}</p>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Apartment information:</li>
-                                <li class="list-group-item">Size: ${room.size}</li>
-                                <li class="list-group-item">Status: ${room.status}</li>
-                                <li class="list-group-item">Price: ${room.price}$</li>
-                                <li class="list-group-item">Class: ${room.room_class}</li>
+                                <li class="list-group-item"><fmt:message key="rooms.info"/></li>
+                                <li class="list-group-item"><fmt:message
+                                        key="request_admin.size"/>: ${room.size}</li>
+                                <li class="list-group-item"><fmt:message key="checks.status"/>: ${room.status}</li>
+                                <li class="list-group-item"><fmt:message key="book.cost"/>: ${room.price}$</li>
+                                <li class="list-group-item"><fmt:message
+                                        key="request_admin.class"/>: ${room.room_class}</li>
                             </ul>
-                            <a href="controller?command=showroom&id=${room.id}">Learn more</a><br>
+                            <a href="controller?command=showroom&id=${room.id}"><fmt:message
+                                    key="request.learn_more"/></a><br>
                         </div>
-
                     </div>
                 </c:forEach>
             </div>

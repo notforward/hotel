@@ -100,30 +100,6 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public List<Check> findAllUserChecks(User user) throws DBException {
-        log.info("#findAllUserChecks user = " + user);
-        List<Check> checks = new ArrayList<>();
-        Connection con;
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            con = DataSource.getConnection();
-            ps = con.prepareStatement(SELECT_USER_BY_ID);
-            ps.setInt(1, user.getId());
-            log.info("ps = " + ps);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                checks.add(extractCheck(rs));
-            }
-        } catch (SQLException e) {
-            log.error("problem in FindAll UserChecks");
-            throw new DBException("Cannot find all users checks, please try again");
-        }
-        log.info("Checks = " + checks);
-        return checks;
-    }
-
-    @Override
     public List<Check> findAllChecks(Connection con) throws DBException {
         log.info("#findAllChecks");
         Statement st;
@@ -146,8 +122,8 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public List<Check> findChecks(int offset, int limit) throws DBException {
-        log.info("#findRooms offset = " + offset + " limit = " + limit);
+    public List<Check> findChecks(int offset, int limit, int user_id) throws DBException {
+        log.info("#findRooms offset = " + offset + " limit = " + limit + " id = " + user_id);
         Connection con = null;
         PreparedStatement ps;
         ResultSet rs;
@@ -156,6 +132,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             con = DataSource.getConnection();
             ps = con.prepareStatement(SELECT_ROOMS);
             int k = 1;
+            ps.setInt(k++, user_id);
             ps.setInt(k++, limit);
             ps.setInt(k, offset);
             log.info("ps = " + ps);

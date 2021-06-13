@@ -1,7 +1,6 @@
 package com.epam.project.hotel.filter;
 
 import com.epam.project.hotel.command.CommandContainer;
-import com.epam.project.hotel.command.entities.ShowRoomsCommand;
 import com.epam.project.hotel.sql.entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

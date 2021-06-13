@@ -3,6 +3,7 @@ package com.epam.project.hotel.sql;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
@@ -16,8 +17,10 @@ public class CreateDB {
         Connection con = DataSource.getConnection();
         ScriptRunner sr = new ScriptRunner(con);
         BufferedReader bf;
+        File file;
         try {
-            bf = new BufferedReader(new FileReader(PATH));
+            file = new File(PATH);
+            bf = new BufferedReader(new FileReader(file));
             System.out.println("START SUCCESSFULLY");
         } catch (FileNotFoundException e) {
             throw new DBException("Problem with reading file", e);

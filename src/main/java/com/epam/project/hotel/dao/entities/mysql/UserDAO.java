@@ -7,6 +7,9 @@ import com.epam.project.hotel.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Optional;
 
@@ -42,9 +45,9 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         try {
             ps = con.prepareStatement(INSERT_USER);
             ps.setString(1, login);
-            ps.setString(2, password);
+            ps.setString(2, hashPass(password));
             ps.setString(3, email);
-            log.info(ps);
+            log.info("ps = " + ps);
             ps.execute();
 
             user = findUserLOG(con, login);
@@ -52,9 +55,35 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
             log.error("Error in createUser", e);
             throw new DBException("Cannot create user, try again", e);
         }
+        log.info("user = " + user);
         return user;
     }
+    public String hashPass(String password) throws DBException {
+        log.info("#hashPass, password = " + password);
+        MessageDigest messageDigest;
+        byte[] digest;
 
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            messageDigest.update(password.getBytes());
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            log.error("Problem at hashing password", e);
+            throw new DBException("Cannot hash pass, try again");
+        }
+
+        BigInteger bigInt = new BigInteger(1, digest);
+        StringBuilder md5Hex = new StringBuilder(
+                bigInt.toString()
+        );
+
+        while( md5Hex.length() < 32 ){
+            md5Hex.append("0").append(md5Hex);
+        }
+        log.info("pass after hashing = " + md5Hex.toString());
+        return md5Hex.toString();
+    }
     @Override
     public User findUserID(int id) throws DBException {
         log.info("UserDAO#findUserID(id)");

@@ -30,6 +30,8 @@ public class AuthorisationCommand implements Command {
         if(user == null){
             throw new DBException("User did not found, try again"   );
         }
+        password = userDAO.hashPass(password);
+        logger.info("password after hashing = " + password);
         if(!user.getPassword().equals(password)){
             throw new DBException("Wrong password, try again");
         }

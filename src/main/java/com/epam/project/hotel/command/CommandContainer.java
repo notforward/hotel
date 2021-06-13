@@ -31,6 +31,8 @@ public class CommandContainer {
         commands.put("checkdateadmin", new CheckDateAdminCommand());
         commands.put("showuserrequest", new ShowUserRequestCommand());
         commands.put("showprofile", new ShowProfileCommand());
+        commands.put("selectlocale", new SelectLocaleCommand());
+        commands.put("sortby", new SortByCommand());
     }
     public static List<String> getUserCommands(){
         List<String> links = new ArrayList<>();
@@ -46,6 +48,8 @@ public class CommandContainer {
         links.add("createrequest");
         links.add("showuserrequest");
         links.add("showprofile");
+        links.add("selectlocale");
+        links.add("sortby");
         return links;
     }
     public static List<String> getManagerCommands(){
@@ -61,6 +65,8 @@ public class CommandContainer {
         links.add("editroom");
         links.add("showrequest");
         links.add("showprofile");
+        links.add("selectlocale");
+        links.add("sortby");
         return links;
     }
     public static List<String> getUnknownCommands(){
@@ -70,6 +76,8 @@ public class CommandContainer {
         links.add("showrooms");
         links.add("showroom");
         links.add("showprofile");
+        links.add("selectlocale");
+        links.add("sortby");
         return links;
     }
     public static Command getCommand(String command){

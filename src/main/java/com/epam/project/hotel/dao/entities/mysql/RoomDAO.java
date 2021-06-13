@@ -13,9 +13,11 @@ import java.util.List;
 
 public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     private static final Logger log = LogManager.getLogger(RoomDAO.class);
-    protected RoomDAO(){
+
+    protected RoomDAO() {
 
     }
+
     @Override
     public Room findRoomID(int id) throws DBException {
         log.info("RoomDAO#findAllRooms(id)");
@@ -29,8 +31,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             rollback(con);
             log.error("Problem at findRoomID(id)", e);
             throw new DBException("Can not find specified room, try again");
-        }
-        finally {
+        } finally {
             close(con);
         }
         return room;
@@ -45,7 +46,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             ps = con.prepareStatement(FIND_ROOM_BY_ID);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 room = extractRoom(con, rs);
             }
         } catch (SQLException e) {
@@ -68,8 +69,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             rollback(con);
             log.error("Problem at findAllRooms(no param)", e);
             throw new DBException("Can not find all rooms, try again");
-        }
-        finally {
+        } finally {
             close(con);
         }
         return rooms;
@@ -81,10 +81,10 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         List<Room> rooms = new ArrayList<>();
         Statement st;
         ResultSet rs;
-        try{
+        try {
             st = con.createStatement();
             rs = st.executeQuery(FIND_ALL_ROOMS);
-            while(rs.next()){
+            while (rs.next()) {
                 rooms.add(extractRoom(con, rs));
             }
         } catch (SQLException e) {
@@ -95,10 +95,9 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     }
 
 
-
     @Override
-    public List<Room> findRooms(int offset, int limit) throws DBException {
-        log.info("#findRooms offset = " + offset + " limit = " + limit);
+    public List<Room> findRooms(int offset, int limit, String orderBy) throws DBException {
+        log.info("#findRooms offset = " + offset + " limit = " + limit + " orderBy = " + orderBy);
         Connection con = null;
         PreparedStatement ps;
         ResultSet rs;
@@ -106,13 +105,27 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         try {
             con = DataSource.getConnection();
             ps = con.prepareStatement(SELECT_ROOMS);
+            log.info("orderBy = " + orderBy);
+            switch (orderBy) {
+                case("price"):
+                    ps = con.prepareStatement(SELECT_ROOMS_PRICE);
+                    break;
+                case("size"):
+                    ps = con.prepareStatement(SELECT_ROOMS_SIZE);
+                    break;
+                case("class"):
+                    ps = con.prepareStatement(SELECT_ROOMS_CLASS);
+                    break;
+                case("status"):
+                    ps = con.prepareStatement(SELECT_ROOMS_STATUS);
+            }
             int k = 1;
             ps.setInt(k++, limit);
             ps.setInt(k, offset);
             log.info("ps = " + ps);
             rs = ps.executeQuery();
             rooms = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next()) {
                 rooms.add(extractRoom(con, rs));
             }
             con.commit();
@@ -121,8 +134,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             rollback(con);
             log.error("Problem findRooms");
             throw new DBException("Cannot find rooms, try again");
-        }
-        finally {
+        } finally {
             close(con);
         }
         return rooms;
@@ -139,15 +151,14 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             con = DataSource.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(FIND_SIZE);
-            if(rs.next()){
+            if (rs.next()) {
                 size = rs.getInt(1);
             }
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem findRooms");
             throw new DBException("Cannot find rooms, try again");
-        }
-        finally {
+        } finally {
             close(con);
         }
         log.info("size = " + size);
@@ -174,8 +185,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             rollback(con);
             log.info("Problem at updateRoomStatus", e);
             throw new DBException("Cannot update room status, please try again", e);
-        }
-        finally {
+        } finally {
             close(con);
         }
         return room;
@@ -206,8 +216,8 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
 
     @Override
     public void rollback(Connection con) {
-        if(con != null){
-            try{
+        if (con != null) {
+            try {
                 con.rollback();
             } catch (SQLException e) {
                 log.info("Cannot close connection", e);
@@ -217,7 +227,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
 
     @Override
     public void close(AutoCloseable ac) {
-        if(ac != null){
+        if (ac != null) {
             try {
                 ac.close();
             } catch (Exception e) {

@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="resources"/>
+<html lang="${locale}">
 <head>
     <title>Access denied!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
@@ -7,7 +12,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<h1>Sorry, you have not permission to visit this page!</h1>
-<a class="btn-lg btn-dark" href="index.jsp">To menu</a>
+<h1><fmt:message key="error.forbidden"/></h1>
+<a class="btn-lg btn-dark" href="index.jsp"><fmt:message key="auth.to_menu"/></a>
 </body>
 </html>

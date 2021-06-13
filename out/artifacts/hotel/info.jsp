@@ -1,4 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="resources"/>
 <html>
 <head>
     <title>About us</title>
@@ -7,8 +13,8 @@
           crossorigin="anonymous">
 </head>
 <body>
-<a href="index.jsp" class="btn btn-dark">To menu</a>
-<h4>About us: </h4>
-<h5>The best hotel ever!</h5>
+<a href="index.jsp" class="btn btn-dark"><fmt:message key="auth.to_menu"/></a>
+<h4><fmt:message key="index.about_us"/>: </h4>
+<h5><fmt:message key="info.description"/></h5>
 </body>
 </html>
