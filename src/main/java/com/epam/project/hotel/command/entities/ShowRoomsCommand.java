@@ -4,23 +4,20 @@ import com.epam.project.hotel.command.Command;
 import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.entities.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class ShowRoomsCommand implements Command {
     private static final int shift = 0;
     private static final Logger log = LogManager.getLogger(ShowRoomsCommand.class);
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws AppException {
         log.info("ShowRoomsCommand#execute");
         String adress = "rooms.jsp";
         int page;
@@ -30,7 +27,9 @@ public class ShowRoomsCommand implements Command {
             page = Integer.parseInt(
                     req.getParameter("page"));
         }
+        log.info("page = " + page);
         int pageSize = 3;
+
         Factory factory = MySQLFactory.getInstance();
         RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
         List<Room> rooms;

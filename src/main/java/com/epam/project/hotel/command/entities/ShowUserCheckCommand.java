@@ -5,7 +5,7 @@ import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Check;
 import com.epam.project.hotel.sql.entities.Room;
@@ -19,10 +19,11 @@ import java.sql.Connection;
 public class ShowUserCheckCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowUserCheckCommand.class);
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws AppException {
         log.info("ShowUserCheckCommand#execute");
         String adress = "check.jsp";
         int id = Integer.parseInt(req.getParameter("id"));
+        log.info("id = " + id);
         Factory factory = MySQLFactory.getInstance();
         CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
         RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
@@ -33,8 +34,8 @@ public class ShowUserCheckCommand implements Command {
             con = DataSource.getConnection();
             check = checkDAO.findCheckByID(con, id);
             room = roomDAO.findRoomID(con, check.getRoom_id());
-        } catch (DBException e) {
-            throw new DBException("Cannot show check, please try again");
+        } catch (AppException e) {
+            throw new AppException("Cannot show check, please try again");
         }
         finally {
             checkDAO.close(con);

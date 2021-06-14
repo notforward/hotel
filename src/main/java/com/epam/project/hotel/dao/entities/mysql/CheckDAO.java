@@ -1,6 +1,6 @@
 package com.epam.project.hotel.dao.entities.mysql;
 
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Check;
 import com.epam.project.hotel.sql.entities.Room;
@@ -22,7 +22,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public Check findCheckByID(int id) throws DBException {
+    public Check findCheckByID(int id) throws AppException {
         log.info("#findCheckByID id=" + id);
         Connection con = null;
         Check check;
@@ -34,7 +34,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Error in findCheckByID");
-            throw new DBException("Cannot find check, please try again");
+            throw new AppException("Cannot find check, please try again");
         } finally {
             close(con);
         }
@@ -42,14 +42,15 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public Check findCheckByID(Connection con, int id) throws DBException {
+    public Check findCheckByID(Connection con, int id) throws AppException {
         log.info("findCheckByID id=" + id + " con = " + con);
         PreparedStatement ps;
         ResultSet rs;
         Check check = null;
         try {
             ps = con.prepareStatement(SELECT_CHECK_BY_ID);
-            ps.setInt(1, id);
+            int k = 1;
+            ps.setInt(k, id);
             log.info("ps = " + ps);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -57,14 +58,14 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             }
         } catch (SQLException e) {
             log.error("Error in findCheckByID");
-            throw new DBException("Cannot find check, please try again");
+            throw new AppException("Cannot find check, please try again");
         }
         return check;
     }
 
     @Override
-    public Check updateCheckStatus(Check check, String status) throws DBException {
-        log.info("updateCheckStatus + check = " + check);
+    public Check updateCheckStatus(Check check, String status) throws AppException {
+        log.info("#updateCheckStatus check = " + check);
         Connection con = null;
         try {
             con = DataSource.getConnection();
@@ -73,7 +74,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem in update check status");
-            throw new DBException("Cannot update check status, please try again");
+            throw new AppException("Cannot update check status, please try again");
         } finally {
             close(con);
         }
@@ -81,7 +82,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public Check updateCheckStatus(Connection con, Check check, String status) throws DBException {
+    public Check updateCheckStatus(Connection con, Check check, String status) throws AppException {
         log.info("#updateCheckStatus check = " + check + " status = " + status);
         PreparedStatement ps;
         try {
@@ -93,21 +94,20 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             log.error("Problem in update check status");
-            throw new DBException("Cannot update check status, please try again");
+            throw new AppException("Cannot update check status, please try again");
         }
         check = findCheckByID(check.getCheck_id());
         return check;
     }
 
     @Override
-    public List<Check> findAllChecks(Connection con) throws DBException {
+    public List<Check> findAllChecks(Connection con) throws AppException {
         log.info("#findAllChecks");
         Statement st;
         ResultSet rs;
         List<Check> checks;
         try {
             st = con.createStatement();
-
             rs = st.executeQuery(SELECT_ALL_CHECKS);
             checks = new ArrayList<>();
             while (rs.next()){
@@ -115,14 +115,14 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             }
         } catch (SQLException e) {
             log.error("Problem at finding all checks", e);
-            throw new DBException("Cannot find all checks, try again");
+            throw new AppException("Cannot find all checks, try again");
         }
         log.info("Checks = " + checks);
         return checks;
     }
 
     @Override
-    public List<Check> findChecks(int offset, int limit, int user_id) throws DBException {
+    public List<Check> findChecks(int offset, int limit, int user_id) throws AppException {
         log.info("#findRooms offset = " + offset + " limit = " + limit + " id = " + user_id);
         Connection con = null;
         PreparedStatement ps;
@@ -146,7 +146,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem findChecks");
-            throw new DBException("Cannot find checks, try again");
+            throw new AppException("Cannot find checks, try again");
         }
         finally {
             close(con);
@@ -155,7 +155,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public int findChecksSize() throws DBException {
+    public int findChecksSize() throws AppException {
         log.info("#findChecksSize");
         Connection con = null;
         Statement st;
@@ -171,7 +171,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem findCheckSize");
-            throw new DBException("Cannot find rooms, try again");
+            throw new AppException("Cannot find rooms, try again");
         }
         finally {
             close(con);
@@ -181,10 +181,8 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     private Check extractCheck(ResultSet rs) throws SQLException {
-        log.info("CheckDAO#extractCheck");
-
+        log.info("#extractCheck");
         Check check = new Check();
-
         check.setCheck_id(rs.getInt("check_id"));
         check.setUser_id(rs.getInt("user_id"));
         check.setRoom_id(rs.getInt("room_id"));
@@ -194,12 +192,13 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         check.setCheck_status(rs.getString("check_status"));
         check.setCheck_creation(rs.getDate("check_creation"));
         check.setCheck_terminate(rs.getDate("check_terminate"));
+
         log.info("check = " + check);
         return check;
     }
 
     @Override
-    public Boolean checkCreation(Date arrival, Date department, int id) throws DBException {
+    public Boolean checkCreation(Date arrival, Date department, int id) throws AppException {
         log.info("CheckDAO#checkCreation arrival = " + arrival + " department = " + department
         + " id = " + id);
         Connection con = null;
@@ -211,7 +210,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Error in checkCreation", e);
-            throw new DBException("Sorry, cannot check dates, try again", e);
+            throw new AppException("Sorry, cannot check dates, try again", e);
         } finally {
             close(con);
         }
@@ -220,7 +219,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws DBException {
+    public Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws AppException {
         log.info("CheckDAO#checkCreation arrival = " + arrival + " department = " + department
                 + " id = " + id);
         if (arrival.after(department)) {
@@ -253,14 +252,14 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             }
         } catch (SQLException e) {
             log.error("Error in checkCreation", e);
-            throw new DBException("Sorry, cannot check dates, try again", e);
+            throw new AppException("Sorry, cannot check dates, try again", e);
         }
         log.info("Dates are not busy, returning true");
         return true;
     }
 
     @Override
-    public Check createCheck(User user, Room room, Date arrival, Date departure) throws DBException {
+    public Check createCheck(User user, Room room, Date arrival, Date departure) throws AppException {
         log.info("#createCheck user = " + user + " room = " + room + " arrival = " + arrival
         + " departure = " + departure);
         Check check;
@@ -269,10 +268,10 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             con = DataSource.getConnection();
             check = createCheck(con, user, room, arrival, departure);
             con.commit();
-        } catch (DBException | SQLException e) {
+        } catch (AppException | SQLException e) {
             rollback(con);
             log.error("Problem in creating check");
-            throw new DBException("Can not create check, try again", e);
+            throw new AppException("Can not create check, try again", e);
         } finally {
             close(con);
         }
@@ -281,7 +280,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     }
 
     @Override
-    public Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws DBException {
+    public Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws AppException {
         log.info("#createCheck user = " + user + " room = " + room + " arrival = " + arrival
                 + " departure = " + departure);
 
@@ -302,7 +301,6 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             java.sql.Date today = new java.sql.Date(millis);
             log.info("Today = " + today);
             int daysToTerminate = 2;
-
             LocalDate terminate = LocalDate.now().plusDays(daysToTerminate);
             ps.setDate(k++, today);
             ps.setDate(k, java.sql.Date.valueOf(terminate));
@@ -316,7 +314,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             }
         } catch (SQLException e) {
             log.error("Error in createCheck");
-            throw new DBException("Cannot create check, please try again");
+            throw new AppException("Cannot create check, please try again");
         }
         log.info("check = " + check);
         return check;
@@ -326,7 +324,6 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     public void rollback(Connection con) {
         if (con != null) {
             try {
-                log.info("rollback");
                 con.rollback();
             } catch (SQLException e) {
                 log.info("Cannot close connection", e);
@@ -338,7 +335,6 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     public void close(AutoCloseable ac) {
         if (ac != null) {
             try {
-                log.info("closing");
                 ac.close();
             } catch (Exception e) {
                 log.info("Cannot close auto closeable", e);

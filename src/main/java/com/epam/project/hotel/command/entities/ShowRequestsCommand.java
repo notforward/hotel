@@ -4,7 +4,7 @@ import com.epam.project.hotel.command.Command;
 import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.entities.Request;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,12 +16,13 @@ import java.util.List;
 public class ShowRequestsCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowRequestsCommand.class);
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws AppException {
         log.info("ShowRequestsCommand#execute");
         String adress = "requests.jsp";
         int page = Integer.parseInt(
                 req.getParameter("page"));
         int pageSize = 6;
+        log.info("page = " + page);
 
         Factory factory = MySQLFactory.getInstance();
         RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");

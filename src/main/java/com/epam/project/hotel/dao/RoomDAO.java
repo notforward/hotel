@@ -1,6 +1,6 @@
 package com.epam.project.hotel.dao;
 
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.entities.Room;
 
 import java.sql.Connection;
@@ -18,15 +18,15 @@ public interface RoomDAO extends EntityDAO {
     String SELECT_ROOMS_STATUS = "SELECT * FROM room ORDER BY room.room_status DESC LIMIT ? OFFSET ?";
     String FIND_SIZE = "SELECT COUNT(*) FROM room";
 
-    Room findRoomID(int id) throws DBException;
-    Room findRoomID(Connection con, int id) throws DBException;
+    Room findRoomID(int id) throws AppException;
+    Room findRoomID(Connection con, int id) throws AppException;
 
-    List<Room> findAllRooms() throws DBException;
-    List<Room> findAllRooms(Connection con) throws DBException;
-    List<Room> findRooms(int offset, int limit, String orderBy) throws DBException;
+    List<Room> findAllRooms() throws AppException;
+    List<Room> findAllRooms(Connection con) throws AppException;
+    List<Room> findRooms(int offset, int limit, String orderBy) throws AppException;
 
-    int findRoomsSize() throws DBException;
+    int findRoomsSize() throws AppException;
 
-    Room updateRoomStatus(Room room, String status) throws DBException;
-    Room extractRoom(Connection con, ResultSet rs) throws DBException;
+    Room updateRoomStatus(Room room, String status) throws AppException;
+    Room extractRoom(Connection con, ResultSet rs) throws AppException;
 }

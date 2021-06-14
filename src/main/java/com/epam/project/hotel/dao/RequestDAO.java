@@ -1,6 +1,6 @@
 package com.epam.project.hotel.dao;
 
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
 import com.epam.project.hotel.sql.entities.User;
@@ -24,24 +24,24 @@ public interface RequestDAO extends EntityDAO{
     String SELECT_REQUESTS = "SELECT * FROM request LIMIT ? OFFSET ?";
     String FIND_SIZE = "SELECT COUNT(*) FROM request";
 
-    List<Request> findAllRequests() throws DBException;
+    List<Request> findAllRequests() throws AppException;
 
-    List<Request> findRequests(int offset, int limit) throws DBException;
+    List<Request> findRequests(int offset, int limit) throws AppException;
 
-    int findRequestsSize() throws DBException;
+    int findRequestsSize() throws AppException;
 
-    Request createRequest(User user, int size, String room_class, Date arrival, Date department) throws DBException;
+    Request createRequest(User user, int size, String room_class, Date arrival, Date department) throws AppException;
 
-    Request findRequestByID(Connection con, int id) throws DBException;
+    Request findRequestByID(Connection con, int id) throws AppException;
 
-    Request findRequestByUser(Connection con, User user) throws DBException;
+    Request findRequestByUser(Connection con, User user) throws AppException;
 
-    Request extractRequest(ResultSet rs) throws DBException;
+    Request extractRequest(ResultSet rs) throws AppException;
 
-    Request createResponse(Connection con, Request request, Room room) throws DBException;
+    Request createResponse(Connection con, Request request, Room room) throws AppException;
 
-    Request extractResponse(Request request, ResultSet rs) throws DBException;
+    Request extractResponse(Request request, ResultSet rs) throws AppException;
 
-    Request updateRequestStatus(Request request, String status) throws DBException;
-    Request updateRequestStatus(Connection con, Request request, String status) throws DBException;
+    Request updateRequestStatus(Request request, String status) throws AppException;
+    Request updateRequestStatus(Connection con, Request request, String status) throws AppException;
 }

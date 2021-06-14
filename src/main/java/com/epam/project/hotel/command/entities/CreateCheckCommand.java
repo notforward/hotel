@@ -5,7 +5,7 @@ import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.entities.Check;
 import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
@@ -20,7 +20,7 @@ import java.util.Date;
 public class CreateCheckCommand implements Command {
     private static final Logger log = LogManager.getLogger(CreateCheckCommand.class);
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws AppException {
         log.info("CreateCheckCommand#execute");
         String adress = "check.jsp";
         User user = (User) req.getSession().getAttribute("user");
@@ -43,6 +43,7 @@ public class CreateCheckCommand implements Command {
         Factory factory = MySQLFactory.getInstance();
         CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
         Check check = checkDAO.createCheck(user, room, arrival, departure);
+        log.info("Check after creation" + check);
         req.getSession().setAttribute("check", check);
         req.getSession().removeAttribute("arrival");
         req.getSession().removeAttribute("departure");

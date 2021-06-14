@@ -8,10 +8,7 @@ import java.sql.SQLException;
 
 
 public class DataSource {
-    /*
-    @return returns connection for
-     */
-    public static Connection getConnection() throws DBException {
+    public static Connection getConnection() throws AppException {
         Connection con;
         try {
             Context initContext;
@@ -20,7 +17,7 @@ public class DataSource {
             javax.sql.DataSource ds = (javax.sql.DataSource) envContext.lookup("jdbc/hotel_db");
             con = ds.getConnection();
         } catch (NamingException | SQLException e) {
-            throw new DBException("Failed in getConnection method", e);
+            throw new AppException("Failed in getConnection method", e);
         }
         return con;
     }

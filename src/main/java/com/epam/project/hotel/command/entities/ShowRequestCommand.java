@@ -5,7 +5,7 @@ import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.RequestDAO;
 import com.epam.project.hotel.dao.RoomDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
@@ -22,12 +22,13 @@ public class ShowRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowRequestCommand.class);
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws AppException {
         log.info("ShowRequestCommand#execute");
         String adress = "request-admin.jsp";
         int request_id = Integer.parseInt(req.getParameter("request_id"));
+        log.info("request id = " + request_id);
         Factory factory = MySQLFactory.getInstance();
-        RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");;
+        RequestDAO requestDAO = (RequestDAO) factory.getDAO("RequestDAO");
         Connection con = null;
         Request request;
         RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
@@ -43,10 +44,10 @@ public class ShowRequestCommand implements Command {
             rooms = roomDAO.findAllRooms(con);
             log.info("rooms after finding = " + rooms);
             con.commit();
-        } catch (DBException | SQLException e) {
+        } catch (AppException | SQLException e) {
             requestDAO.rollback(con);
             log.error("Problem at transaction showRequestCommand", e);
-            throw new DBException("Cannot show request, try again");
+            throw new AppException("Cannot show request, try again");
         }
         finally {
             requestDAO.close(con);

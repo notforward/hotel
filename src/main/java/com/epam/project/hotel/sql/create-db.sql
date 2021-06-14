@@ -126,7 +126,8 @@ VALUES ('FREE', 'Family Sea View Room', 300, 'Family Sea View Room description',
 INSERT INTO room (room_status, room_name, room_price, room_description, room_size, room_class, room_photo)
 VALUES ('FREE', 'Presidential Room', 500, 'Presidential Room description', 2, 'PREMIUM', 'static/PresidentialRoom.jpg');
 INSERT INTO room (room_status, room_name, room_price, room_description, room_size, room_class, room_photo)
-VALUES ('FREE', 'Family Plus Size Room', 300, 'Family Plus Size Room description', 3, 'LUXURY', 'static/FamilyRoom.jpg');
+VALUES ('FREE', 'Family Plus Size Room', 300, 'Family Plus Size Room description', 3, 'LUXURY',
+        'static/FamilyRoom.jpg');
 INSERT INTO room (room_status, room_name, room_price, room_description, room_size, room_class, room_photo)
 VALUES ('FREE', 'Regular Room', 150, 'Regular Room description', 4, 'PREMIUM', 'static/FamilyRoomSeaView.jpg');
 INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status, check_creation,

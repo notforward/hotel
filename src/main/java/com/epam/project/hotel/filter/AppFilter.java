@@ -18,7 +18,7 @@ public class AppFilter implements Filter {
 
     private final Map<String, List<String>> map = new HashMap<>();
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         List<String> links = CommandContainer.getUserCommands();
         map.put("1", links);
         links = CommandContainer.getManagerCommands();

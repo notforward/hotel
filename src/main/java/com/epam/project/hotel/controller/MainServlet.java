@@ -5,7 +5,7 @@ package com.epam.project.hotel.controller;
 import com.epam.project.hotel.command.entities.AuthorisationCommand;
 import com.epam.project.hotel.command.Command;
 import com.epam.project.hotel.command.CommandContainer;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +30,7 @@ public class MainServlet extends HttpServlet {
         try{
             adress = command.execute(req, resp);
         }
-        catch (DBException e) {
+        catch (AppException e) {
             logger.error("Problem at doGet", e);
             req.getSession().setAttribute("error", e);
         }
@@ -38,12 +38,11 @@ public class MainServlet extends HttpServlet {
         if(adress.equals("index.jsp")){
             req.getRequestDispatcher(adress).forward(req, resp);
         }
-        // "/WEB-INF/jsp/" + adress
         req.getRequestDispatcher(adress).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         logger.info("#doPost");
         String adress = "error.jsp";
         String name = req.getParameter("command");
@@ -52,7 +51,7 @@ public class MainServlet extends HttpServlet {
         try{
             adress = command.execute(req, resp);
         }
-        catch (DBException e) {
+        catch (AppException e) {
             logger.error("Problem at doPost", e);
             req.getSession().setAttribute("error", e);
         }
@@ -60,7 +59,6 @@ public class MainServlet extends HttpServlet {
         if(adress.equals("index.jsp")){
             resp.sendRedirect(adress);
         }
-        // "/WEB-INF/jsp/" + adress
         resp.sendRedirect(adress);
     }
 }

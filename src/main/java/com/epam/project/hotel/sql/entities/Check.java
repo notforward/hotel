@@ -60,6 +60,26 @@ public class Check implements Entity {
         this.price = check_price;
     }
 
+    public String getCheck_status() {
+        return check_status;
+    }
+
+    public void setCheck_status(String check_status) {
+        this.check_status = check_status;
+    }
+
+    public void setCheck_creation(Date check_creation) {
+        this.check_creation = check_creation;
+    }
+
+    public Date getCheck_terminate() {
+        return check_terminate;
+    }
+
+    public void setCheck_terminate(Date check_terminate) {
+        this.check_terminate = check_terminate;
+    }
+
     public Date getRoom_in() {
         return room_in;
     }
@@ -74,29 +94,5 @@ public class Check implements Entity {
 
     public void setRoom_out(Date room_out) {
         this.room_out = room_out;
-    }
-
-    public String getCheck_status() {
-        return check_status;
-    }
-
-    public void setCheck_status(String check_status) {
-        this.check_status = check_status;
-    }
-
-    public Date getCheck_creation() {
-        return check_creation;
-    }
-
-    public void setCheck_creation(Date check_creation) {
-        this.check_creation = check_creation;
-    }
-
-    public Date getCheck_terminate() {
-        return check_terminate;
-    }
-
-    public void setCheck_terminate(Date check_terminate) {
-        this.check_terminate = check_terminate;
     }
 }

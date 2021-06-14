@@ -1,6 +1,6 @@
 package com.epam.project.hotel.dao;
 
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.entities.Check;
 import com.epam.project.hotel.sql.entities.Room;
 import com.epam.project.hotel.sql.entities.User;
@@ -21,21 +21,21 @@ public interface    CheckDAO extends EntityDAO {
     String SELECT_ROOMS = "SELECT * FROM payment_check WHERE payment_check.user_id = ? LIMIT ? OFFSET ?";
     String FIND_SIZE = "SELECT COUNT(*) FROM payment_check";
 
-    Check findCheckByID(int id) throws DBException;
-    Check findCheckByID(Connection con, int id) throws DBException;
+    Check findCheckByID(int id) throws AppException;
+    Check findCheckByID(Connection con, int id) throws AppException;
 
-    Check updateCheckStatus(Check check, String status) throws DBException;
-    Check updateCheckStatus(Connection con, Check check, String status) throws DBException;
+    Check updateCheckStatus(Check check, String status) throws AppException;
+    Check updateCheckStatus(Connection con, Check check, String status) throws AppException;
 
-    List<Check> findAllChecks(Connection con) throws DBException;
-    List<Check> findChecks(int offset, int limit, int user_id) throws DBException;
+    List<Check> findAllChecks(Connection con) throws AppException;
+    List<Check> findChecks(int offset, int limit, int user_id) throws AppException;
 
-    int findChecksSize() throws DBException;
+    int findChecksSize() throws AppException;
 
-    Boolean checkCreation(Date arrival, Date department, int id) throws DBException;
-    Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws DBException;
+    Boolean checkCreation(Date arrival, Date department, int id) throws AppException;
+    Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws AppException;
 
-    Check createCheck(User user, Room room, Date arrival, Date departure) throws DBException;
-    Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws DBException;
+    Check createCheck(User user, Room room, Date arrival, Date departure) throws AppException;
+    Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws AppException;
 
 }

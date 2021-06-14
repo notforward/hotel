@@ -5,7 +5,7 @@ import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
@@ -22,7 +22,7 @@ public class ShowUserRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowUserRequestCommand.class);
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws AppException {
         log.info("ShowUserRequestCommand#execute");
         String adress = "user-request.jsp";
         Factory factory = MySQLFactory.getInstance();
@@ -37,7 +37,7 @@ public class ShowUserRequestCommand implements Command {
             con = DataSource.getConnection();
             request = requestDAO.findRequestByUser(con, user);
             if(request == null){
-                throw new DBException("You have not any requests, create one!");
+                throw new AppException("You have not any requests, create one!");
             }
             room = roomDAO.findRoomID(con, request.getRoom_id());
             log.info("request = " + request + " room = " + room + " user = " + user);
@@ -45,7 +45,7 @@ public class ShowUserRequestCommand implements Command {
         } catch (SQLException e) {
             log.error("Problem at transaction show user request", e);
             roomDAO.rollback(con);
-            throw new DBException("Cannot find request, try again");
+            throw new AppException("Cannot find request, try again");
         }
         finally {
             roomDAO.close(con);

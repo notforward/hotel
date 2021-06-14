@@ -4,7 +4,7 @@ import com.epam.project.hotel.dao.CheckDAO;
 import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.sql.CreateDB;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Check;
 import org.apache.logging.log4j.LogManager;
@@ -27,13 +27,13 @@ public class AppListener implements ServletContextListener {
         log.info("AppListener#contextInit");
         try {
             CreateDB.createDB();
-        } catch (DBException e) {
+        } catch (AppException e) {
             log.error("Problem in create DB", e);
         }
         Terminator terminator = new Terminator();
         terminator.start();
     }
-    private class Terminator extends Thread{
+    private static class Terminator extends Thread{
         @Override
         public void run() {
             log.info("Terminator started...");
@@ -62,10 +62,10 @@ public class AppListener implements ServletContextListener {
                         Thread.currentThread().wait(timeoutToCheck);
                         run();
                     } catch (InterruptedException e) {
-                        throw new DBException("Cannot check and terminate", e);
+                        throw new AppException("Cannot check and terminate", e);
                     }
                 }
-            } catch (DBException | SQLException e) {
+            } catch (AppException | SQLException e) {
                 log.error("Problem at terminator", e);
             }
             finally {

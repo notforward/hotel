@@ -5,7 +5,7 @@ import com.epam.project.hotel.dao.CheckDAO;
 import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.RoomDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
@@ -20,7 +20,7 @@ import java.sql.SQLException;
 public class CheckDateAdminCommand implements Command {
     private static final Logger log = LogManager.getLogger(CheckDateAdminCommand.class);
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws AppException {
         log.info("CheckDateAdminCommand#execute");
         String adress = "request-admin.jsp";
         Request request = (Request) req.getSession().getAttribute("request");
@@ -40,13 +40,13 @@ public class CheckDateAdminCommand implements Command {
             available = checkDAO.checkCreation(con, request.getArrival(), request.getDepartment(), room.getId());
             log.info("available = " + available);
             con.commit();
-        } catch (DBException | SQLException e) {
+        } catch (AppException | SQLException e) {
             roomDAO.rollback(con);
             log.error("Problem at transaction command checking date", e);
-            throw new DBException("Cannot check dates, try again");
+            throw new AppException("Cannot check dates, try again");
         }
         finally {
-            roomDAO.rollback(con);
+            roomDAO.close(con);
         }
         if(available){
             req.getSession().setAttribute("available_room", room);

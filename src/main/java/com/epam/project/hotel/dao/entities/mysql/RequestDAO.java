@@ -1,6 +1,6 @@
 package com.epam.project.hotel.dao.entities.mysql;
 
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
@@ -18,7 +18,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
 
     }
     @Override
-    public List<Request> findAllRequests() throws DBException {
+    public List<Request> findAllRequests() throws AppException {
         log.info("#findAllRequests");
         Connection con = null;
         Statement st;
@@ -37,7 +37,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         } catch (SQLException e) {
             rollback(con);
             log.info("Problem at findAllRequests");
-            throw new DBException("Cannot find all requests, please try again");
+            throw new AppException("Cannot find all requests, please try again");
         }
         finally {
             close(con);
@@ -46,7 +46,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     }
 
     @Override
-    public List<Request> findRequests(int offset, int limit) throws DBException {
+    public List<Request> findRequests(int offset, int limit) throws AppException {
         log.info("#findRequests offset = " + offset + " limit = " + limit);
         Connection con = null;
         PreparedStatement ps;
@@ -69,7 +69,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem findRequests");
-            throw new DBException("Cannot find requests, try again");
+            throw new AppException("Cannot find requests, try again");
         }
         finally {
             close(con);
@@ -78,7 +78,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     }
 
     @Override
-    public int findRequestsSize() throws DBException {
+    public int findRequestsSize() throws AppException {
         log.info("#findRequestsSize");
         Connection con = null;
         Statement st;
@@ -94,7 +94,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem findRooms");
-            throw new DBException("Cannot find rooms, try again");
+            throw new AppException("Cannot find rooms, try again");
         }
         finally {
             close(con);
@@ -104,7 +104,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     }
 
     @Override
-    public Request createRequest(User user , int size, String room_class, Date arrival, Date department) throws DBException {
+    public Request createRequest(User user , int size, String room_class, Date arrival, Date department) throws AppException {
         log.info("#createRequest size = " + size + " class = " + room_class +
                 " arrival = " + arrival + " department = " + department + " user = " + user);
         Connection con = null;
@@ -131,7 +131,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem at createRequest");
-            throw new DBException("Cannot create request, please try again", e);
+            throw new AppException("Cannot create request, please try again", e);
         }
         finally {
             close(con);
@@ -141,7 +141,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     }
 
     @Override
-    public Request findRequestByID(Connection con, int id) throws DBException {
+    public Request findRequestByID(Connection con, int id) throws AppException {
         log.info("#findRequestByID id = " + id);
         PreparedStatement ps;
         ResultSet rs;
@@ -165,14 +165,14 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
             }
         } catch (SQLException e) {
             log.error("Problem at findRequestByID");
-            throw new DBException("Cannot create request, please try again", e);
+            throw new AppException("Cannot create request, please try again", e);
         }
         log.info("request = " + request);
         return request;
     }
 
     @Override
-    public Request findRequestByUser(Connection con, User user) throws DBException {
+    public Request findRequestByUser(Connection con, User user) throws AppException {
         log.info("#findRequestByUser , user = " + user);
         PreparedStatement ps;
         ResultSet rs;
@@ -198,13 +198,13 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
             }
         } catch (SQLException e) {
             log.error("Problem at findRequestByUser");
-            throw new DBException("Cannot find request, try again", e);
+            throw new AppException("Cannot find request, try again", e);
         }
         return request;
     }
 
     @Override
-    public Request extractRequest(ResultSet rs) throws DBException {
+    public Request extractRequest(ResultSet rs) throws AppException {
         log.info("#extractRequest");
         Request request = new Request();
         try {
@@ -217,13 +217,14 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
             request.setStatus(rs.getString("request_status"));
         } catch (SQLException e) {
             log.error("Problem at extractRequest");
-            throw new DBException("Cannot create request, please try again", e);
+            throw new AppException("Cannot create request, please try again", e);
         }
+        log.info("Request = " + request);
         return request;
     }
 
     @Override
-    public Request createResponse(Connection con, Request request, Room room) throws DBException {
+    public Request createResponse(Connection con, Request request, Room room) throws AppException {
         log.info("#createResponse request = " + request + " room = " + room);
         PreparedStatement ps;
         try {
@@ -237,25 +238,26 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
             log.info("request after creating response = " + request);
         } catch (SQLException e) {
             log.error("Problem at createResponse");
-            throw new DBException("Cannot create response, try again", e);
+            throw new AppException("Cannot create response, try again", e);
         }
         return request;
     }
 
     @Override
-    public Request extractResponse(Request request, ResultSet rs) throws DBException {
+    public Request extractResponse(Request request, ResultSet rs) throws AppException {
         log.info("#extractResponse req = " + request);
         try {
             request.setRoom_id(rs.getInt("room_id"));
         } catch (SQLException e) {
             log.error("Problem at extract Response", e);
-            throw new DBException("Cannot extract response, try again");
+            throw new AppException("Cannot extract response, try again");
         }
+        log.info("req = " + request);
         return request;
     }
 
     @Override
-    public Request updateRequestStatus(Request request, String status) throws DBException {
+    public Request updateRequestStatus(Request request, String status) throws AppException {
         Connection con = null;
         try {
             con = DataSource.getConnection();
@@ -264,7 +266,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem at updatingRequestStatus");
-            throw new DBException("Cannot update request status, try again");
+            throw new AppException("Cannot update request status, try again");
         }
         finally {
             close(con);
@@ -273,7 +275,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     }
 
     @Override
-    public Request updateRequestStatus(Connection con, Request request, String status) throws DBException{
+    public Request updateRequestStatus(Connection con, Request request, String status) throws AppException {
         log.info("updateRequestStatus request = " + request + " status = " + status);
         PreparedStatement ps;
         try {
@@ -285,9 +287,9 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
             ps.executeUpdate();
             request = findRequestByID(con, request.getRequest_id());
             log.info("request after update = " + request);
-        } catch (DBException | SQLException e) {
+        } catch (AppException | SQLException e) {
             log.error("Problem at updateRequestStatus");
-            throw new DBException("Cannot update request status, try again");
+            throw new AppException("Cannot update request status, try again");
         }
         return request;
     }

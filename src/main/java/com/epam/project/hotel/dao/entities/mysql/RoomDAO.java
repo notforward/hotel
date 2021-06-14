@@ -1,6 +1,6 @@
 package com.epam.project.hotel.dao.entities.mysql;
 
-import com.epam.project.hotel.sql.DBException;
+import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Room;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +19,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     }
 
     @Override
-    public Room findRoomID(int id) throws DBException {
+    public Room findRoomID(int id) throws AppException {
         log.info("RoomDAO#findAllRooms(id)");
         Connection con = null;
         Room room;
@@ -30,7 +30,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem at findRoomID(id)", e);
-            throw new DBException("Can not find specified room, try again");
+            throw new AppException("Can not find specified room, try again");
         } finally {
             close(con);
         }
@@ -38,7 +38,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     }
 
     @Override
-    public Room findRoomID(Connection con, int id) throws DBException {
+    public Room findRoomID(Connection con, int id) throws AppException {
         log.info("RoomDAO#findRoomID(con, id)");
         PreparedStatement ps;
         Room room = null;
@@ -51,13 +51,13 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             }
         } catch (SQLException e) {
             log.error("Problem in findRoomID", e);
-            throw new DBException("Cannot find specified room, try again");
+            throw new AppException("Cannot find specified room, try again");
         }
         return room;
     }
 
     @Override
-    public List<Room> findAllRooms() throws DBException {
+    public List<Room> findAllRooms() throws AppException {
         log.info("RoomDAO#findAllRooms(-)");
         Connection con = null;
         List<Room> rooms;
@@ -68,7 +68,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem at findAllRooms(no param)", e);
-            throw new DBException("Can not find all rooms, try again");
+            throw new AppException("Can not find all rooms, try again");
         } finally {
             close(con);
         }
@@ -76,7 +76,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     }
 
     @Override
-    public List<Room> findAllRooms(Connection con) throws DBException {
+    public List<Room> findAllRooms(Connection con) throws AppException {
         log.info("RoomDAO#findAllRooms(con)");
         List<Room> rooms = new ArrayList<>();
         Statement st;
@@ -89,14 +89,14 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             }
         } catch (SQLException e) {
             log.error("Problem in finding all rooms");
-            throw new DBException("Can not find all rooms, try again", e);
+            throw new AppException("Can not find all rooms, try again", e);
         }
         return rooms;
     }
 
 
     @Override
-    public List<Room> findRooms(int offset, int limit, String orderBy) throws DBException {
+    public List<Room> findRooms(int offset, int limit, String orderBy) throws AppException {
         log.info("#findRooms offset = " + offset + " limit = " + limit + " orderBy = " + orderBy);
         Connection con = null;
         PreparedStatement ps;
@@ -133,7 +133,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem findRooms");
-            throw new DBException("Cannot find rooms, try again");
+            throw new AppException("Cannot find rooms, try again");
         } finally {
             close(con);
         }
@@ -141,7 +141,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     }
 
     @Override
-    public int findRoomsSize() throws DBException {
+    public int findRoomsSize() throws AppException {
         log.info("#findRoomsSize");
         Connection con = null;
         Statement st;
@@ -157,7 +157,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         } catch (SQLException e) {
             rollback(con);
             log.error("Problem findRooms");
-            throw new DBException("Cannot find rooms, try again");
+            throw new AppException("Cannot find rooms, try again");
         } finally {
             close(con);
         }
@@ -166,7 +166,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     }
 
     @Override
-    public Room updateRoomStatus(Room room, String status) throws DBException {
+    public Room updateRoomStatus(Room room, String status) throws AppException {
         log.info("RoomDAO#updateRoomStatus(-)");
         Connection con = null;
         PreparedStatement ps;
@@ -184,7 +184,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         } catch (SQLException e) {
             rollback(con);
             log.info("Problem at updateRoomStatus", e);
-            throw new DBException("Cannot update room status, please try again", e);
+            throw new AppException("Cannot update room status, please try again", e);
         } finally {
             close(con);
         }
@@ -192,7 +192,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     }
 
     @Override
-    public Room extractRoom(Connection con, ResultSet rs) throws DBException {
+    public Room extractRoom(Connection con, ResultSet rs) throws AppException {
         log.info("RoomDAO#extractRoom");
         Room room;
         try {
@@ -209,7 +209,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             log.info("room = " + room);
         } catch (SQLException e) {
             log.error("Problem in extracting room");
-            throw new DBException("Can not find specified room, try again", e);
+            throw new AppException("Can not find specified room, try again", e);
         }
         return room;
     }
