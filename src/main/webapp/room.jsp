@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
+\
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -53,7 +55,7 @@
                     </c:if>
                     <c:if test="${sessionScope.user.role == '2'}">
                         <form method="post" action="controller">
-                            <input type="hidden" name="command" value="editroom">
+                            <my:command command="editroom"/>
                             <select class="form-select" id="class" name="status" required>
                                 <option selected value="" disabled>Choose one</option>
                                 <option value="FREE"><fmt:message key="room.free"/></option>
@@ -72,7 +74,7 @@
                         </c:when>
                         <c:when test="${sessionScope.user.role == '1' && sessionScope.room.status != 'UNAVAILABLE'}">
                             <form action="controller" method="post" style="margin-top: 15px">
-                                <input type="hidden" name="command" value="bookroom">
+                                <my:command command="bookroom"/>
                                 <input type="submit" class="btn-lg btn-dark" value="<fmt:message key="book.book"/>">
                             </form>
                         </c:when>

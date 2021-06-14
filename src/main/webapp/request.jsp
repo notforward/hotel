@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -19,7 +20,7 @@
 </div>
 <div class="col-md-3" style="margin: 7px">
     <form action="controller" method="post">
-        <input type="hidden" name="command" value="createrequest">
+        <my:command command="createrequest"/>
         <label for="size"><fmt:message key="request.choose_size"/></label>
         <select class="form-select" id="size" name="size" required>
             <option value="2">2</option>

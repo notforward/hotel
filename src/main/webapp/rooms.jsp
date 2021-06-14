@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -54,7 +55,7 @@
 |
 
 <form action="controller" style='display:inline;'>
-    <input name="command" value="showrooms" type="hidden"/>
+    <my:command command="showrooms"/>
     <select name="page">
         <c:forEach begin="1" end="${pages}" var="p">
             <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>

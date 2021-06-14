@@ -1,0 +1,16 @@
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee">
+    <tlib-version>1.0</tlib-version>
+    <short-name>Command Tag Library</short-name>
+    <tag>
+        <name>command</name>
+        <tag-class>com.epam.project.hotel.tags.CommandTag</tag-class>
+        <body-content>empty</body-content>
+
+        <attribute>
+            <name>command</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+</taglib>

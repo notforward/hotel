@@ -19,10 +19,10 @@
 <h1><fmt:message key="book.purchase"/></h1><br>
 <div class="col-md-5" style="margin: 5px">
     <label class="form-label"><fmt:message key="book.apart_name"/> </label>
-    <input class="form-control" type="text" placeholder="${room.name}"
+    <input class="form-control" type="text" placeholder="${sessionScope.room.name}"
            aria-label="Disabled input name" disabled readonly style="margin-top: 7px">
     <label class="form-label"><fmt:message key="book.cost"/> </label>
-    <input class="form-control" type="text" placeholder="${room.price}$"
+    <input class="form-control" type="text" placeholder="${sessionScope.room.price}$"
            aria-label="Disabled input price" disabled readonly style="margin-top: 7px">
     <label class="form-label"><fmt:message key="book.payment"/> </label>
     <input class="form-control" type="text" placeholder="Cash"
@@ -30,14 +30,14 @@
     <form action="controller" method="post">
         <input type="hidden" name="command" value="checkdate">
         <label for="arrival"> <fmt:message key="book.arrival"/>
-            <input type="date" name="arrival" value="${arrival}"
-                   id="arrival" max="2022-01-01" min="${today}" style="margin-top: 7px">
+            <input type="date" name="arrival" value="${sessionScope.arrival}"
+                   id="arrival" max="2022-01-01" min="${sessionScope.today}" style="margin-top: 7px">
         </label><br>
         <label for="department"> <fmt:message key="book.department"/>
-            <input type="date" name="department" value="${departure}"
-                   id="department" max="2022-01-01" min="${today}" style="margin-top: 7px">
+            <input type="date" name="department" value="${sessionScope.departure}"
+                   id="department" max="2022-01-01" min="${sessionScope.today}" style="margin-top: 7px">
         </label><br>
-        <c:if test="${!dates && dates != null}">
+        <c:if test="${!sessionScope.dates && sessionScope.dates != null}">
             <div class="alert alert-danger" role="alert">
                 <fmt:message key="book.not_available"/>
             </div>

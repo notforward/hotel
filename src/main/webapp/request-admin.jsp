@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -37,7 +38,7 @@
 </div>
 <div>
     <form action="controller" method="post">
-        <input type="hidden" name="command" value="checkdateadmin">
+        <my:command command="checkdateadmin"/>
         <label class="form-label"><fmt:message key="request_admin.choose_room"/>:
             <select name="selected_room">
                 <c:forEach items="${rooms}" var="room">
@@ -76,7 +77,7 @@
             #${available_room.name}#<br>
             <fmt:message key="request_admin.send_conformation"/><br>
             <form action="controller" method="post">
-                <input type="hidden" name="command" value="confirmrequest">
+                <my:command command="confirmrequest"/>
                 <input type="submit" value="<fmt:message key="request_admin.send"/>!">
             </form>
         </c:if>

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -44,7 +45,7 @@
 </c:choose>
 |
 <form action="controller" style='display:inline;'>
-    <input name="command" value="showrequests" type="hidden"/>
+    <my:command command="showrequests"/>
     <select name="page">
         <c:forEach begin="1" end="${pages}" var="p">
             <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>
@@ -67,7 +68,7 @@
                                 <li class="list-group-item"><fmt:message key="checks.status"/>: ${req.status}</li>
                             </ul>
                             <form action="controller" method="get">
-                                <input type="hidden" name="command" value="showrequest">
+                                <my:command command="showrequest"/>
                                 <input type="hidden" name="request_id" value="${req.request_id}">
                                 <input type="submit" value="<fmt:message key="request.learn_more"/>">
                             </form>

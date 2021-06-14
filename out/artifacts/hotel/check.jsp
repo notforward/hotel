@@ -19,31 +19,31 @@
 <div class="col-md-4" style="margin: 5px">
     <h4><fmt:message key="checks.check_info"/></h4>
     <label class="form-label"><fmt:message key="book.apart_name"/> </label>
-    <input class="form-control" type="text" placeholder="${room.name}"
+    <input class="form-control" type="text" placeholder="${sessionScope.room.name}"
            aria-label="Disabled input name" disabled readonly style="margin: 7px">
     <label class="form-label"><fmt:message key="check.check_in"/> </label>
     <input class="form-control" type="text" placeholder="${sessionScope.check.room_in}"
            aria-label="Disabled input price" disabled readonly style="margin: 7px">
     <label class="form-label"><fmt:message key="check.check_out"/> </label>
-    <input class="form-control" type="text" placeholder="${check.room_out}"
+    <input class="form-control" type="text" placeholder="${sessionScope.check.room_out}"
            aria-label="Disabled input price" disabled readonly style="margin: 7px">
     <label class="form-label"><fmt:message key="book.payment"/> </label>
     <input class="form-control" type="text" placeholder="Cash / card"
            aria-label="Disabled input price" disabled readonly style="margin: 7px">
     <label class="form-label"><fmt:message key="book.cost"/> </label>
-    <input class="form-control" type="text" placeholder="${check.price}$"
+    <input class="form-control" type="text" placeholder="${sessionScope.check.price}$"
            aria-label="Disabled input price" disabled readonly style="margin: 7px">
 </div>
 <c:choose>
-    <c:when test="${check.check_status == 'PAYED'}">
+    <c:when test="${sessionScope.check.check_status == 'PAYED'}">
         <div class="alert alert-success col-md-4" role="alert" style="margin: 7px">
             <fmt:message key="check.all_done"/>
         </div>
     </c:when>
-    <c:when test="${check.check_status == 'NOT PAYED'}">
+    <c:when test="${sessionScope.check.check_status == 'NOT PAYED'}">
         <a class="btn btn-dark" href="controller?command=paycheck" style="margin: 7px"><fmt:message key="check.pay"/></a>
     </c:when>
-    <c:when test="${check.check_status == 'TERMINATED'}">
+    <c:when test="${sessionScope.check.check_status == 'TERMINATED'}">
         <div class="alert alert-danger col-md-4" role="alert" style="margin: 7px">
             <fmt:message key="check.terminated"/>
         </div>

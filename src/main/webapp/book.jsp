@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -28,7 +29,7 @@
     <input class="form-control" type="text" placeholder="Cash"
            aria-label="Disabled input price" disabled readonly style="margin-top: 7px">
     <form action="controller" method="post">
-        <input type="hidden" name="command" value="checkdate">
+        <my:command command="checkdate"/>
         <label for="arrival"> <fmt:message key="book.arrival"/>
             <input type="date" name="arrival" value="${sessionScope.arrival}"
                    id="arrival" max="2022-01-01" min="${sessionScope.today}" style="margin-top: 7px">
@@ -46,7 +47,7 @@
     </form>
     <c:if test="${sessionScope.dates}">
         <form action="controller" method="post" style="margin: 7px">
-            <input type="hidden" name="command" value="createcheck">
+            <my:command command="createcheck"/>
             <div class="alert alert-success" role="alert">
                 <fmt:message key="book.available"/>
             </div>
