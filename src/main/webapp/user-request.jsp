@@ -15,7 +15,7 @@
 <body>
 <a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp"><fmt:message key="auth.to_menu"/></a><br>
 <H4><fmt:message key="user-request.your"/> </H4>
-<div style="margin: 7px">
+<div class="margin">
     <label class="form-label"><fmt:message key="request_admin.id"/>
         <input class="form-control" type="text" placeholder="${request.request_id}"
                aria-label="Disabled input price" disabled readonly>
@@ -39,24 +39,24 @@
 </div>
 <c:choose>
     <c:when test="${request.status == 'CREATED'}">
-        <div class="alert alert-success col-md-4" role="alert">
+        <div class="alert alert-success col-md-4 margin" role="alert">
             <fmt:message key="request.created_wait"/>
         </div>
     </c:when>
     <c:when test="${request.status == 'MANAGER_ACCEPTED'}">
-        <div class="alert alert-success col-md-4" role="alert">
+        <div class="alert alert-success col-md-4 margin" role="alert">
             <fmt:message key="request.manager_accepted"/><br>
                 ${room.name}<br>
-            <a class="btn btn-dark" href="controller?command=createcheck"><fmt:message key="book.book"/></a>
+            <a class="btn btn-dark margin" href="controller?command=createcheck"><fmt:message key="book.book"/></a>
         </div>
     </c:when>
     <c:when test="${request.status == 'MANAGER_DECLINED'}">
-        <div class="alert alert-success col-md-4" role="alert">
+        <div class="alert alert-success col-md-4 margin" role="alert">
             <fmt:message key="request.manager_declined"/>
         </div>
     </c:when>
     <c:when test="${request.status == 'USER_ACCEPTED'}">
-        <div class="alert alert-success col-md-4" role="alert">
+        <div class="alert alert-success col-md-4 margin" role="alert">
             <fmt:message key="request.success"/>
         </div>
     </c:when>

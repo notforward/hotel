@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * The command allows you to see the last available request of the user as well as the room that is associated with him
+ */
 public class ShowUserRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowUserRequestCommand.class);
 

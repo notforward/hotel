@@ -12,6 +12,10 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This command is designed to work out situations of user authorization
+ * by putting the User attribute and today's date in the session.
+ */
 public class AuthorisationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AuthorisationCommand.class);
     @Override

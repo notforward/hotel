@@ -1,0 +1,19 @@
+#text-align-right {
+    text-align: right;
+}
+.margin {
+    margin: 7px;
+}
+#margin-top {
+    margin-top: 7px;
+}
+#text-align-left {
+    text-align: left;
+}
+#text-align-center {
+    text-align: center;
+}
+.inline{
+    width: 30rem;
+    display: inline-block;
+}

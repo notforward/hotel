@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * A command that allows a user to pay a check in a simple manner and returns a new check object for payment to the session
+ */
 public class PayCheckCommand implements Command {
     private static final Logger log = LogManager.getLogger(PayCheckCommand.class);
     @Override

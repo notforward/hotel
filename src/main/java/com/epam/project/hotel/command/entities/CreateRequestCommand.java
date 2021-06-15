@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 
+/**
+ * This command allows you to create a user's request,
+ * process it and put it in the database. At the end, it puts an attribute of the request object into the session
+ */
 public class CreateRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(CreateCheckCommand.class);
     @Override

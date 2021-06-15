@@ -1,5 +1,7 @@
 package com.epam.project.hotel.sql.entities;
-
+/**
+ * Entity for user table
+ */
 public class User implements Entity{
 
     private int id;

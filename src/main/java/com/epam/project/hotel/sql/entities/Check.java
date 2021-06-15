@@ -2,6 +2,9 @@ package com.epam.project.hotel.sql.entities;
 
 import java.util.Date;
 
+/**
+ * Entity for payment_check table
+ */
 public class Check implements Entity {
     private int check_id;
     private int user_id;
@@ -70,6 +73,10 @@ public class Check implements Entity {
 
     public void setCheck_creation(Date check_creation) {
         this.check_creation = check_creation;
+    }
+
+    public Date getCheck_creation() {
+        return check_creation;
     }
 
     public Date getCheck_terminate() {

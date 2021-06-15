@@ -18,6 +18,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Simple app listener that helps to check every N days checks and delete unpaid ones. Also, recreates DB from file
+ */
 @WebListener
 public class AppListener implements ServletContextListener {
     private static final Logger log = LogManager.getLogger(AppListener.class);

@@ -13,8 +13,8 @@
           crossorigin="anonymous">
 </head>
 <body>
-<a class="btn btn-dark" href="controller?command=showrequests&page=1"><fmt:message key="request_admin.requests"/></a>
-<div style="margin: 7px">
+<a class="btn btn-dark margin" href="controller?command=showrequests&page=1"><fmt:message key="request_admin.requests"/></a>
+<div class="margin">
     <label class="form-label"><fmt:message key="request_admin.id"/>
         <input class="form-control" type="text" placeholder="${request.request_id}"
                aria-label="Disabled input price" disabled readonly>

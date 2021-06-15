@@ -8,6 +8,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * A simple command that allows you to remove a user attribute from a session
+ */
 public class LogOutCommand implements Command {
     private static final Logger log = LogManager.getLogger(LogOutCommand.class);
     @Override

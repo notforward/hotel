@@ -17,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
+/**
+ * This command is designed to create a payment receipt if a room came up to the user and it passed all checks. At the end, it puts an attribute of the check object
+ * into the session and deletes the attributes of check-in, check-out and whether the room is free
+ */
 public class CreateCheckCommand implements Command {
     private static final Logger log = LogManager.getLogger(CreateCheckCommand.class);
     @Override

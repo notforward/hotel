@@ -3,6 +3,9 @@ package com.epam.project.hotel.dao.entities.mysql;
 import com.epam.project.hotel.dao.EntityDAO;
 import com.epam.project.hotel.dao.Factory;
 
+/**
+ * This class helps to implement Factory + Singleton patterns. Returns DAO on mentioned in String. (MySQL realization)
+ */
 public class MySQLFactory implements Factory {
     private static MySQLFactory instance = null;
 

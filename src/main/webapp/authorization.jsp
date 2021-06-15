@@ -9,14 +9,17 @@
 <html lang="${locale}">
 <head>
     <title>Authorization</title>
+    <link href="styles.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
           crossorigin="anonymous">
 </head>
 <body>
-<div style="margin: 7px">
-    <a type="button" class="btn btn-outline-dark" href="index.jsp" style="margin: 7px"><fmt:message key="auth.to_menu"/></a><br>
-    <a type="button" class="btn btn-outline-dark" href="registration.jsp" style="margin: 7px"><fmt:message key="index.registration"/></a><br>
+<div class="margin">
+    <a type="button" class="btn btn-outline-dark margin" href="index.jsp"><fmt:message
+            key="auth.to_menu"/></a><br>
+    <a type="button" class="btn btn-outline-dark margin" href="registration.jsp"><fmt:message
+            key="index.registration"/></a><br>
 </div>
 <div class="container">
     <div id="auth" class="col-md-4 ">
@@ -24,7 +27,8 @@
             <my:command command="login"/>
             <div class="mb-3">
                 <label for="InputLogin" class="form-label"><fmt:message key="auth.user_login"/></label>
-                <input name="login" type="text" class="form-control" id="InputLogin" aria-describedby="emailHelp" required>
+                <input name="login" type="text" class="form-control" id="InputLogin" aria-describedby="emailHelp"
+                       required>
             </div>
             <div class="mb-3">
                 <label for="InputPassword" class="form-label"><fmt:message key="auth.pass"/></label>

@@ -9,7 +9,10 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 
-public interface    CheckDAO extends EntityDAO {
+/**
+ * Interface that provides all SQL queries for CheckDAO methods.
+ */
+public interface CheckDAO extends EntityDAO {
 
     String INSERT_CHECK = "INSERT INTO payment_check(user_id, room_id, room_in, room_out, check_price, check_status, check_creation, check_terminate)" +
             " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

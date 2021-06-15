@@ -6,7 +6,9 @@ import com.epam.project.hotel.sql.entities.Room;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
-
+/**
+ * Interface that provides all SQL queries for RoomDAO methods.
+ */
 public interface RoomDAO extends EntityDAO {
     String FIND_ALL_ROOMS = "SELECT * FROM room";
     String FIND_ROOM_BY_ID = "SELECT * FROM room WHERE room_id = ?";

@@ -9,7 +9,8 @@
 <!DOCTYPE html>
 <html lang="${locale}">
 <head>
-        <title>Main menu</title>
+    <title>Main menu</title>
+    <link href="styles.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
           crossorigin="anonymous">
@@ -22,30 +23,36 @@
 <div class="container">
     <div id="index">
         <h1><fmt:message key="index.greetings"/></h1><br/>
-        <div style="text-align: right">
+        <div id="text-align-right">
             <c:choose>
                 <c:when test="${user != null}">
                     <h5><fmt:message key="index.logged_as"/> : ${user.login}</h5>
-                    <a class="btn btn-dark" href="controller?command=showprofile"><fmt:message key="index.to_profile"/></a><br>
-                    <a class="btn btn-dark" href="controller?command=logout" style="margin-top: 7px"><fmt:message key="index.log_out"/></a>
+                    <a class="btn btn-dark" href="controller?command=showprofile"><fmt:message
+                            key="index.to_profile"/></a><br>
+                    <a class="btn btn-dark" href="controller?command=logout" id="margin-top"><fmt:message
+                            key="index.log_out"/></a>
                 </c:when>
                 <c:when test="${user == null}">
                     <a class="btn btn-dark" href="authorization.jsp"><fmt:message key="index.log_in"/></a><br/>
-                    <a class="btn btn-dark" href="registration.jsp" style="margin-top: 7px"><fmt:message key="index.registration"/></a>
+                    <a class="btn btn-dark" href="registration.jsp" id="margin-top"><fmt:message
+                            key="index.registration"/></a>
                 </c:when>
             </c:choose>
         </div>
-        <div style="text-align: center">
+        <div id="text-align-center">
             <c:choose>
                 <c:when test="${sessionScope.user.role == '1'}">
-                    <a class="btn btn-dark" href="request.jsp" style="margin-top: 7px"><fmt:message key="index.create_request"/></a><br>
+                    <a class="btn btn-dark" href="request.jsp" id="margin-top"><fmt:message
+                            key="index.create_request"/></a><br>
                 </c:when>
                 <c:when test="${sessionScope.user.role == '2'}">
-                    <a class="btn btn-dark" href="controller?command=showrequests&page=1" style="margin-top: 7px"><fmt:message key="index.requests"/></a><br>
+                    <a class="btn btn-dark" href="controller?command=showrequests&page=1"
+                       id="margin-top"><fmt:message key="index.requests"/></a><br>
                 </c:when>
             </c:choose>
-            <a class="btn btn-dark" href="controller?command=showrooms&page=1&orderBy=price" style="margin-top: 7px"><fmt:message key="index.rooms"/></a><br>
-            <a class="btn btn-dark" href="info.jsp" style="margin-top: 7px"><fmt:message key="index.about_us"/></a>
+            <a class="btn btn-dark margin" href="controller?command=showrooms&page=1&orderBy=price"
+               id="margin-top"><fmt:message key="index.rooms"/></a><br>
+            <a class="btn btn-dark margin" href="info.jsp"><fmt:message key="index.about_us"/></a>
         </div>
     </div>
 </div>

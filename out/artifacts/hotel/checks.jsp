@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -44,7 +45,7 @@
 </c:choose>
 |
 <form action="controller" style='display:inline;'>
-    <input name="command" value="showuserchecks" type="hidden"/>
+    <my:command command="showusercheck"/>
     <select name="page">
         <c:forEach begin="1" end="${pages}" var="p">
             <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>
@@ -70,7 +71,7 @@
                                 <li class="list-group-item"><fmt:message
                                         key="checks.creation_date"/>: ${check.check_creation}</li>
                             </ul>
-                            <a href="controller?command=showusercheck&id=${check.check_id}" class="btn btn-dark">
+                            <a href="controller?command=showusercheck&id=${check.check_id}" class="btn btn-dark margin">
                                 <fmt:message key="checks.details"/></a>
                         </div>
                     </div>

@@ -1,5 +1,7 @@
 package com.epam.project.hotel.sql.entities;
-
+/**
+ * Entity for room table
+ */
 public class Room implements Entity{
     private int id;
     private String status;
@@ -76,7 +78,15 @@ public class Room implements Entity{
         this.description = description;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getPhoto() {
+        return photo;
     }
 }

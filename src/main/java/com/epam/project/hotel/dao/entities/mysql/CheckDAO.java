@@ -14,13 +14,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The class that represents the functionality for working with the database (payment_check table)
+ */
+
 public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
     private static final Logger log = LogManager.getLogger(CheckDAO.class);
 
     protected CheckDAO() {
 
     }
-
+    // This method helps to find check by ID. Return - check entity
     @Override
     public Check findCheckByID(int id) throws AppException {
         log.info("#findCheckByID id=" + id);
@@ -40,7 +44,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         }
         return check;
     }
-
+    // Same method with getting connection
     @Override
     public Check findCheckByID(Connection con, int id) throws AppException {
         log.info("findCheckByID id=" + id + " con = " + con);
@@ -62,7 +66,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         }
         return check;
     }
-
+    // This method helps to update check status. Return - check entity
     @Override
     public Check updateCheckStatus(Check check, String status) throws AppException {
         log.info("#updateCheckStatus check = " + check);
@@ -80,7 +84,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         }
         return check;
     }
-
+    // Same as above with getting connection
     @Override
     public Check updateCheckStatus(Connection con, Check check, String status) throws AppException {
         log.info("#updateCheckStatus check = " + check + " status = " + status);
@@ -96,10 +100,11 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             log.error("Problem in update check status");
             throw new AppException("Cannot update check status, please try again");
         }
-        check = findCheckByID(check.getCheck_id());
+        check = findCheckByID(con, check.getCheck_id());
         return check;
     }
 
+    // This method helps to find all checks. Return - list of check entity
     @Override
     public List<Check> findAllChecks(Connection con) throws AppException {
         log.info("#findAllChecks");
@@ -120,7 +125,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("Checks = " + checks);
         return checks;
     }
-
+    // This method helps to find checks with offset and limit params in sql query. Depends on user_id
     @Override
     public List<Check> findChecks(int offset, int limit, int user_id) throws AppException {
         log.info("#findRooms offset = " + offset + " limit = " + limit + " id = " + user_id);
@@ -153,7 +158,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         }
         return checks;
     }
-
+    // Returns amount of all checks in DB
     @Override
     public int findChecksSize() throws AppException {
         log.info("#findChecksSize");
@@ -179,7 +184,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("size = " + size);
         return size;
     }
-
+    // Helps to get check entity from rs
     private Check extractCheck(ResultSet rs) throws SQLException {
         log.info("#extractCheck");
         Check check = new Check();
@@ -196,7 +201,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("check = " + check);
         return check;
     }
-
+    // Checking is it available to create check for dates that mentioned
     @Override
     public Boolean checkCreation(Date arrival, Date department, int id) throws AppException {
         log.info("CheckDAO#checkCreation arrival = " + arrival + " department = " + department
@@ -217,7 +222,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("is available = " + available);
         return available;
     }
-
+    // Same as above with getting connection
     @Override
     public Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws AppException {
         log.info("CheckDAO#checkCreation arrival = " + arrival + " department = " + department
@@ -230,6 +235,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         ResultSet rs;
         try {
             ps = con.prepareStatement(INSPECT_CHECK);
+            log.info(ps);
             ps.setInt(1, id);
             log.info("ps = " + ps);
             rs = ps.executeQuery();
@@ -243,8 +249,12 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
                                 && arrival.before(rs.getDate("room_out")))
                                 || (department.before(rs.getDate("room_out"))
                                 && department.after(rs.getDate("room_in")))
+
                                 || (arrival.before(rs.getDate("room_in"))
                                 && department.after(rs.getDate("room_out")))
+
+                                || (department.equals(rs.getDate("room_out"))
+                                && arrival.equals(rs.getDate("room_in")))
                 ) {
                     log.info("Dates are busy, returning false");
                     return false;
@@ -257,7 +267,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("Dates are not busy, returning true");
         return true;
     }
-
+    // This method helps to createCheck
     @Override
     public Check createCheck(User user, Room room, Date arrival, Date departure) throws AppException {
         log.info("#createCheck user = " + user + " room = " + room + " arrival = " + arrival
@@ -278,7 +288,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("check = " + check);
         return check;
     }
-
+    // Same as above with getting connection
     @Override
     public Check createCheck(Connection con, User user, Room room, Date arrival, Date departure) throws AppException {
         log.info("#createCheck user = " + user + " room = " + room + " arrival = " + arrival
@@ -319,7 +329,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("check = " + check);
         return check;
     }
-
+    // Rollback for transaction
     @Override
     public void rollback(Connection con) {
         if (con != null) {
@@ -330,7 +340,7 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             }
         }
     }
-
+    // Close connection method
     @Override
     public void close(AutoCloseable ac) {
         if (ac != null) {

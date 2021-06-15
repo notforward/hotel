@@ -71,7 +71,7 @@
                                 <li class="list-group-item"><fmt:message
                                         key="checks.creation_date"/>: ${check.check_creation}</li>
                             </ul>
-                            <a href="controller?command=showusercheck&id=${check.check_id}" class="btn btn-dark">
+                            <a href="controller?command=showusercheck&id=${check.check_id}" class="btn btn-dark margin">
                                 <fmt:message key="checks.details"/></a>
                         </div>
                     </div>

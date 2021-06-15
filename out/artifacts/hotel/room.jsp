@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="/WEB-INF/tags.tld" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:setLocale value="${locale}"/>
@@ -13,7 +14,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<div style="text-align: right">
+<div id="text-align-right">
     <a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp"><fmt:message key="auth.to_menu"/></a>
 </div>
 <div class="container">
@@ -44,16 +45,16 @@
                     <input class="form-control" type="text" placeholder="${room.description}"
                            aria-label="Disabled input description"
                            disabled readonly>
-                    <label class="form-label"> <fmt:message key="checks.status"/>: </label>
+                    <label class="form-label margin"> <fmt:message key="checks.status"/>: </label>
                     <c:if test="${sessionScope.user.role != '2'}">
-                        <input class="form-control" type="text" placeholder="${room.status}"
+                        <input class="form-control margin" type="text" placeholder="${room.status}"
                                aria-label="Disabled input status"
                                disabled readonly
                                value="${room.status}">
                     </c:if>
                     <c:if test="${sessionScope.user.role == '2'}">
                         <form method="post" action="controller">
-                            <input type="hidden" name="command" value="editroom">
+                            <my:command command="editroom"/>
                             <select class="form-select" id="class" name="status" required>
                                 <option selected value="" disabled>Choose one</option>
                                 <option value="FREE"><fmt:message key="room.free"/></option>
@@ -61,24 +62,24 @@
                                 <option value="IN USE"><fmt:message key="room.in_use"/></option>
                                 <option value="UNAVAILABLE"><fmt:message key="room.unavailable"/></option>
                             </select>
-                            <input type="submit" value="<fmt:message key="room.edit_room"/>" class="btn-lg btn-dark"
-                                   style="margin-top: 15px">
+                            <input type="submit" value="<fmt:message key="room.edit_room"/>"
+                                   class="btn-lg btn-dark margin">
                         </form>
                     </c:if>
                     <c:choose>
                         <c:when test="${user == null}">
-                            <a class="btn btn-dark" href="authorization.jsp" style="margin-top: 7px"><fmt:message
+                            <div class="margin">
+                            <a class="btn btn-dark" href="authorization.jsp"><fmt:message
                                     key="room.log_in"/></a>
+                            </div>
                         </c:when>
                         <c:when test="${sessionScope.user.role == '1' && sessionScope.room.status != 'UNAVAILABLE'}">
-                            <form action="controller" method="post" style="margin-top: 15px">
-                                <input type="hidden" name="command" value="bookroom">
-                                <input type="submit" class="btn-lg btn-dark" value="<fmt:message key="book.book"/>">
-                            </form>
+                            <a class="btn-lg btn-dark margin" href="book.jsp"><fmt:message
+                                    key="book.book"/></a>
                         </c:when>
                     </c:choose>
                     <c:if test="${editRoomResult}">
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-success margin" role="alert">
                             <fmt:message key="room.status_changed"/>
                             <c:remove var="editRoomResult"/>
                         </div>

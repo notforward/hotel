@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Simple filter that helps to control user behavior and do not allow to visit non selected pages
+ */
 @WebFilter(filterName = "AppFilter", urlPatterns = "/controller", dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class AppFilter implements Filter {
     private static final Logger log = LogManager.getLogger(AppFilter.class);

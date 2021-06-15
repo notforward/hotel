@@ -12,13 +12,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
+/**
+ * Class that helps to work with user table in database.
+ */
 public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
     private static final Logger log = LogManager.getLogger(UserDAO.class);
 
     protected UserDAO() {
 
     }
-
+    // Method that provide creation of user
     @Override
     public User createUser(String login, String password, String email) throws AppException {
         log.info("UserDAO#createUser(Login = " + login + "pass = " + password + " email = " + email);
@@ -35,7 +38,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         log.info("User = " + user);
         return user;
     }
-
+    // Method with connection same as above
     @Override
     public User createUser(Connection con, String login, String password, String email) throws AppException {
         log.info("UserDAO#createUser(Con, login, pass, email)");
@@ -58,6 +61,8 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         log.info("user = " + user);
         return user;
     }
+    // Hashing password with MD5 algorithm
+    @Override
     public String hashPass(String password) throws AppException {
         log.info("#hashPass, password = " + password);
         MessageDigest messageDigest;
@@ -84,6 +89,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         log.info("pass after hashing = " + md5Hex.toString());
         return md5Hex.toString();
     }
+    // finding user on selected id
     @Override
     public User findUserID(int id) throws AppException {
         log.info("UserDAO#findUserID(id)");
@@ -100,7 +106,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         }
         return user;
     }
-
+    // with connection
     @Override
     public User findUserID(Connection con, int id) throws AppException {
         log.info("UserDAO#findUserID id = " + id);
@@ -122,7 +128,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         }
         return user;
     }
-
+    // helps to find user with mentioned login
     @Override
     public User findUserLOG(String login) throws AppException {
         log.info("UserDAO#findUserLOG");
@@ -139,7 +145,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         }
         return user;
     }
-
+    // same as above with connection
     @Override
     public User findUserLOG(Connection con, String login) throws AppException {
         log.info("UserDAO#findUserLOG(Con, log)");
@@ -163,12 +169,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         }
         return user;
     }
-
-    @Override
-    public boolean checkPass(User user) {
-        return false;
-    }
-
+    // Helps to get entity of user on selected result set
     @Override
     public User extractUser(ResultSet rs) throws SQLException {
         log.info("RoomDAO#extractUser");
@@ -181,7 +182,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         log.info("User role = " + user.getRole());
         return user;
     }
-
+    // Rollback for transaction
     @Override
     public void rollback(Connection con) {
         if (con != null) {
@@ -192,7 +193,7 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
             }
         }
     }
-
+    // Close connection method
     @Override
     public void close(AutoCloseable ac) {
         if (ac != null) {

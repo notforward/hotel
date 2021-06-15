@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 
+/**
+ * The command allows you to view the user's receipt. Returns the check
+ * and the room that is tied to the check
+ */
 public class ShowUserCheckCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowUserCheckCommand.class);
     @Override

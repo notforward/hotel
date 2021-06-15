@@ -8,6 +8,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * A simple command that helps you sort rooms by a given request attribute
+ */
 public class SortByCommand implements Command {
     private static final Logger log = LogManager.getLogger(SortByCommand.class);
     @Override

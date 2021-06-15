@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * The command allows using the pagination principle to show all the user's receipts.
+ */
 public class ShowUserChecksCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowRoomsCommand.class);
 

@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * A simple command that allows the manager to reject a request
+ */
 public class DeclineRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(DeclineRequestCommand.class);
     @Override

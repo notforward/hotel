@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 
 public class DataSource {
+
     public static Connection getConnection() throws AppException {
         Connection con;
         try {

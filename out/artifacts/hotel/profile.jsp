@@ -13,23 +13,23 @@
           crossorigin="anonymous">
 </head>
 <body>
-<div style="text-align: right;">
+<div id="text-align-right">
     <a class="btn btn-dark" href="${pageContext.request.contextPath}/index.jsp"><fmt:message key="auth.to_menu"/></a><br/>
 </div>
-<div class="col-md-4" style="margin: 7px">
+<div class="col-md-4 margin">
     <h4><fmt:message key="index.logged_as"/> ${sessionScope.user.login}</h4>
     <label class="form-label"> <fmt:message key="profile.id"/>: </label>
-    <input class="form-control" type="text" placeholder="${sessionScope.user.id}"
-           aria-label="Disabled input id" disabled readonly style="margin-top: 7px">
+    <input class="form-control margin" type="text" placeholder="${sessionScope.user.id}"
+           aria-label="Disabled input id" disabled readonly>
     <label class="form-label"> <fmt:message key="profile.login"/>: </label>
-    <input class="form-control" type="text" placeholder="${sessionScope.user.login}"
-           aria-label="Disabled input login" disabled readonly style="margin-top: 7px">
+    <input class="form-control margin" type="text" placeholder="${sessionScope.user.login}"
+           aria-label="Disabled input login" disabled readonly>
     <label class="form-label"> <fmt:message key="profile.email"/> </label>
     <input class="form-control" type="text" placeholder="${sessionScope.user.email}"
            aria-label="Disabled input password" disabled readonly>
     <c:if test="${sessionScope.user.role == '1'}">
-        <a class="btn btn-dark" href="controller?command=showuserchecks&page=1" style="margin-top: 7px" aria-disabled="true"><fmt:message key="profile.checks"/></a>
-        <a class="btn btn-dark" href="controller?command=showuserrequest" style="margin-top: 7px"><fmt:message key="profile.last_request"/></a>
+        <a class="btn btn-dark margin" href="controller?command=showuserchecks&page=1" aria-disabled="true"><fmt:message key="profile.checks"/></a>
+        <a class="btn btn-dark margin" href="controller?command=showuserrequest"><fmt:message key="profile.last_request"/></a>
     </c:if>
 </div>
 </body>

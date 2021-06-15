@@ -18,6 +18,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The command allows the administrator to view the selected request and
+ * loads all rooms for selection into the session.
+ */
 public class ShowRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowRequestCommand.class);
 

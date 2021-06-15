@@ -4,6 +4,9 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
+/**
+ * Simple tag for command pattern realization
+ */
 public class CommandTag extends SimpleTagSupport {
 
     private String command;

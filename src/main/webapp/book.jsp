@@ -14,44 +14,44 @@
           crossorigin="anonymous">
 </head>
 <body>
-<div style="text-align: right">
+<div id="text-align-right">
     <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-dark"><fmt:message key="auth.to_menu"/></a>
 </div>
 <h1><fmt:message key="book.purchase"/></h1><br>
-<div class="col-md-5" style="margin: 5px">
+<div class="col-md-5 margin">
     <label class="form-label"><fmt:message key="book.apart_name"/> </label>
     <input class="form-control" type="text" placeholder="${sessionScope.room.name}"
-           aria-label="Disabled input name" disabled readonly style="margin-top: 7px">
+           aria-label="Disabled input name" disabled readonly id="margin-top">
     <label class="form-label"><fmt:message key="book.cost"/> </label>
     <input class="form-control" type="text" placeholder="${sessionScope.room.price}$"
-           aria-label="Disabled input price" disabled readonly style="margin-top: 7px">
+           aria-label="Disabled input price" disabled readonly id="margin-top">
     <label class="form-label"><fmt:message key="book.payment"/> </label>
     <input class="form-control" type="text" placeholder="Cash"
-           aria-label="Disabled input price" disabled readonly style="margin-top: 7px">
+           aria-label="Disabled input price" disabled readonly id="margin-top">
     <form action="controller" method="post">
         <my:command command="checkdate"/>
         <label for="arrival"> <fmt:message key="book.arrival"/>
             <input type="date" name="arrival" value="${sessionScope.arrival}"
-                   id="arrival" max="2022-01-01" min="${sessionScope.today}" style="margin-top: 7px">
+                   id="arrival" max="2022-01-01" min="${sessionScope.today}" class="margin">
         </label><br>
         <label for="department"> <fmt:message key="book.department"/>
             <input type="date" name="department" value="${sessionScope.departure}"
-                   id="department" max="2022-01-01" min="${sessionScope.today}" style="margin-top: 7px">
+                   id="department" max="2022-01-01" min="${sessionScope.today}" class="margin">
         </label><br>
         <c:if test="${!sessionScope.dates && sessionScope.dates != null}">
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger margin" role="alert">
                 <fmt:message key="book.not_available"/>
             </div>
         </c:if>
-        <input type="submit" class="btn btn-dark" value="<fmt:message key="book.check_dates"/>">
+        <input type="submit" class="btn btn-dark margin" value="<fmt:message key="book.check_dates"/>">
     </form>
     <c:if test="${sessionScope.dates}">
-        <form action="controller" method="post" style="margin: 7px">
+        <form action="controller" method="post" class="margin">
             <my:command command="createcheck"/>
             <div class="alert alert-success" role="alert">
                 <fmt:message key="book.available"/>
             </div>
-            <input type="submit" class="btn btn-dark" value="<fmt:message key="book.book"/>" style="margin-top: 7px">
+            <input type="submit" class="btn btn-dark margin" value="<fmt:message key="book.book"/>">
         </form>
     </c:if>
 </div>

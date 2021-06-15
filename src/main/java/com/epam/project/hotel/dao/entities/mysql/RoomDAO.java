@@ -10,14 +10,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class that helps to work with room table in database.
+ */
 public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     private static final Logger log = LogManager.getLogger(RoomDAO.class);
 
     protected RoomDAO() {
 
     }
-
+    // Helps to find room by id
     @Override
     public Room findRoomID(int id) throws AppException {
         log.info("RoomDAO#findAllRooms(id)");
@@ -36,7 +38,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         }
         return room;
     }
-
+    // Method with connection
     @Override
     public Room findRoomID(Connection con, int id) throws AppException {
         log.info("RoomDAO#findRoomID(con, id)");
@@ -55,7 +57,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         }
         return room;
     }
-
+    // Helps to find all rooms
     @Override
     public List<Room> findAllRooms() throws AppException {
         log.info("RoomDAO#findAllRooms(-)");
@@ -74,7 +76,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         }
         return rooms;
     }
-
+    // With connection
     @Override
     public List<Room> findAllRooms(Connection con) throws AppException {
         log.info("RoomDAO#findAllRooms(con)");
@@ -93,8 +95,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         }
         return rooms;
     }
-
-
+    // Helps to find selected rooms on offset with limit and order
     @Override
     public List<Room> findRooms(int offset, int limit, String orderBy) throws AppException {
         log.info("#findRooms offset = " + offset + " limit = " + limit + " orderBy = " + orderBy);
@@ -139,7 +140,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         }
         return rooms;
     }
-
+    // Counts all rooms in table and returns integer
     @Override
     public int findRoomsSize() throws AppException {
         log.info("#findRoomsSize");
@@ -164,7 +165,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         log.info("size = " + size);
         return size;
     }
-
+    // Helps to update room status on selected room
     @Override
     public Room updateRoomStatus(Room room, String status) throws AppException {
         log.info("RoomDAO#updateRoomStatus(-)");
@@ -190,7 +191,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         }
         return room;
     }
-
+    // Helps to extract room information and create entity of room on selected connection and result set
     @Override
     public Room extractRoom(Connection con, ResultSet rs) throws AppException {
         log.info("RoomDAO#extractRoom");
@@ -213,7 +214,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
         }
         return room;
     }
-
+    // Rollback for transaction
     @Override
     public void rollback(Connection con) {
         if (con != null) {
@@ -224,7 +225,7 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
             }
         }
     }
-
+    // Close connection
     @Override
     public void close(AutoCloseable ac) {
         if (ac != null) {

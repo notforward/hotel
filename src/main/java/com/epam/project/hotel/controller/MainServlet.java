@@ -16,25 +16,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The main controller of the application, which helps to use commands to move to business logic. Implements the PRG pattern
+ */
 @WebServlet(name="controller", urlPatterns = {"/controller"})
 public class MainServlet extends HttpServlet {
-    private static final Logger logger = LogManager.getLogger(AuthorisationCommand.class);
+    private static final Logger log = LogManager.getLogger(AuthorisationCommand.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("#doGet");
+        log.info("#doGet");
         String adress = "error.jsp";
         String name = req.getParameter("command");
-        logger.info("Command = " + name);
+        log.info("Command = " + name);
         Command command = CommandContainer.getCommand(name);
         try{
             adress = command.execute(req, resp);
         }
         catch (AppException e) {
-            logger.error("Problem at doGet", e);
+            log.error("Problem at doGet", e);
             req.getSession().setAttribute("error", e);
         }
-        logger.info("forwarded to " + adress);
+        log.info("forwarded to " + adress);
         if(adress.equals("index.jsp")){
             req.getRequestDispatcher(adress).forward(req, resp);
         }
@@ -43,19 +46,19 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        logger.info("#doPost");
+        log.info("#doPost");
         String adress = "error.jsp";
         String name = req.getParameter("command");
-        logger.info("Command = " + name);
+        log.info("Command = " + name);
         Command command = CommandContainer.getCommand(name);
         try{
             adress = command.execute(req, resp);
         }
         catch (AppException e) {
-            logger.error("Problem at doPost", e);
+            log.error("Problem at doPost", e);
             req.getSession().setAttribute("error", e);
         }
-        logger.info("redirected to " + adress);
+        log.info("redirected to " + adress);
         if(adress.equals("index.jsp")){
             resp.sendRedirect(adress);
         }

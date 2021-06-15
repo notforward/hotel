@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * A team that implements the pagination principle and
+ * allows the manager to view all new requests
+ */
 public class ShowRequestsCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowRequestsCommand.class);
     @Override

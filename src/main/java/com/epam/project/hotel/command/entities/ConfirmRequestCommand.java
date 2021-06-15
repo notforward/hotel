@@ -17,6 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * This command allows the manager to create a response
+ * to the user's request and returns a request at the end.
+ */
 public class ConfirmRequestCommand implements Command {
     private static final Logger log = LogManager.getLogger(ConfirmRequestCommand.class);
     @Override

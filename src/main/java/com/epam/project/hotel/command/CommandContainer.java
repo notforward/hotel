@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Command container, which also has the function of helping the filter to select commands available to the user
+ */
 public class CommandContainer {
     private static final Map<String, Command> commands;
     static {
@@ -16,7 +19,6 @@ public class CommandContainer {
         commands.put("showrooms", new ShowRoomsCommand());
         commands.put("showroom", new ShowRoomCommand());
         commands.put("logout", new LogOutCommand());
-        commands.put("bookroom", new BookRoomCommand());
         commands.put("createcheck", new CreateCheckCommand());
         commands.put("checkdate", new CheckDateCommand());
         commands.put("showuserchecks", new ShowUserChecksCommand());
@@ -39,7 +41,6 @@ public class CommandContainer {
         links.add("showrooms");
         links.add("showroom");
         links.add("logout");
-        links.add("bookroom");
         links.add("createcheck");
         links.add("showuserchecks");
         links.add("showusercheck");

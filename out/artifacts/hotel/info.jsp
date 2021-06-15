@@ -13,7 +13,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<a href="index.jsp" class="btn btn-dark"><fmt:message key="auth.to_menu"/></a>
+<a href="index.jsp" class="btn btn-dark margin"><fmt:message key="auth.to_menu"/></a>
 <h4><fmt:message key="index.about_us"/>: </h4>
 <h5><fmt:message key="info.description"/></h5>
 </body>

@@ -11,6 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
 
+/**
+ * Class that recreates db from selected file
+ */
 public class CreateDB {
     private static final Logger log = LogManager.getLogger(AppListener.class);
 

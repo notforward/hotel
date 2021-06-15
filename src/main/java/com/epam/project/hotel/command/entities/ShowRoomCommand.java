@@ -23,6 +23,9 @@ public class ShowRoomCommand implements Command {
         Factory factory = MySQLFactory.getInstance();
         RoomDAO roomDAO = (RoomDAO) factory.getDAO("RoomDAO");
         Room room = roomDAO.findRoomID(id);
+        if(room == null){
+            throw new AppException("Cannot find selected room, try again");
+        }
         log.info("Room = " + room);
         req.getSession().setAttribute("room", room);
         return adress;

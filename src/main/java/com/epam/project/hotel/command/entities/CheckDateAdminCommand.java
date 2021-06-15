@@ -17,6 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * This command is a check if the room is free according to the specified
+ * dates and at the end puts the attribute in the session if it is available
+ */
 public class CheckDateAdminCommand implements Command {
     private static final Logger log = LogManager.getLogger(CheckDateAdminCommand.class);
     @Override

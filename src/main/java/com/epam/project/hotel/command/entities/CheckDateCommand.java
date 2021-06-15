@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 
+/**
+ * This command is a check for the availability of a room for a regular user and returns
+ * the dates on which the room is recorded and whether it is available
+ */
 public class CheckDateCommand implements Command {
     private static final Logger log = LogManager.getLogger(CheckDateCommand.class);
     @Override
@@ -28,6 +32,9 @@ public class CheckDateCommand implements Command {
         Date department = Date.valueOf(req.getParameter("department"));
         Room room = (Room) req.getSession().getAttribute("room");
         log.info("arrival = " + arrival + " departure = " + department + " room = " + room);
+        if(arrival == null || department == null || room == null){
+            throw new AppException("Cannot resolve params, try again");
+        }
         available = checkDAO.checkCreation(arrival, department, room.getId());
         req.getSession().setAttribute("dates", available);
         req.getSession().setAttribute("arrival", arrival);

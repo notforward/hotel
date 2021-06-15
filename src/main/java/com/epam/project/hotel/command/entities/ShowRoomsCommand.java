@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * The command allows using the pagination principle to view all available rooms,
+ * sort them or select an existing one
+ */
 public class ShowRoomsCommand implements Command {
     private static final int shift = 0;
     private static final Logger log = LogManager.getLogger(ShowRoomsCommand.class);

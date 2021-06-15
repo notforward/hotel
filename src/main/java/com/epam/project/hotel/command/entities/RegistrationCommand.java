@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * A command that helps create and process a new user. At the end, it puts an attribute of the user himself into the session
+ */
 public class RegistrationCommand implements Command {
     private static final Logger log = LogManager.getLogger(RegistrationCommand.class);
     @Override

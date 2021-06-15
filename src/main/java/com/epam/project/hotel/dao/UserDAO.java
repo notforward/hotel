@@ -6,7 +6,9 @@ import com.epam.project.hotel.sql.AppException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+ * Interface that provides all SQL queries for UserDAO methods.
+ */
 public interface UserDAO extends EntityDAO {
 
     String FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id = ?";
@@ -19,9 +21,10 @@ public interface UserDAO extends EntityDAO {
     User findUserID(int id) throws AppException;
     User findUserID(Connection con, int id) throws AppException;
 
+    public String hashPass(String password) throws AppException;
+
     User findUserLOG(String login) throws AppException;
     User findUserLOG(Connection con, String login) throws AppException;
     User extractUser(ResultSet rs) throws SQLException;
 
-    boolean checkPass(User user);
 }

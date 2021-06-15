@@ -1,7 +1,9 @@
 package com.epam.project.hotel.sql.entities;
 
 import java.sql.Date;
-
+/**
+ * Entity for request table
+ */
 public class Request implements Entity {
 
     private int request_id;

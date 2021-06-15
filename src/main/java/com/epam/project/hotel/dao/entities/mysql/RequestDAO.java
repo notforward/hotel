@@ -12,11 +12,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that helps to work with request table in DB
+ */
 public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
     private static final Logger log = LogManager.getLogger(RequestDAO.class);
     protected RequestDAO(){
 
     }
+    // Finding all requests in table
     @Override
     public List<Request> findAllRequests() throws AppException {
         log.info("#findAllRequests");
@@ -44,7 +48,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         }
         return requests;
     }
-
+    // Finds all requests in selected offset with limit
     @Override
     public List<Request> findRequests(int offset, int limit) throws AppException {
         log.info("#findRequests offset = " + offset + " limit = " + limit);
@@ -76,7 +80,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         }
         return requests;
     }
-
+    // Counts all requests in table and returns integer
     @Override
     public int findRequestsSize() throws AppException {
         log.info("#findRequestsSize");
@@ -102,7 +106,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         log.info("size = " + size);
         return size;
     }
-
+    // Method helps create request on selected user and information about request.
     @Override
     public Request createRequest(User user , int size, String room_class, Date arrival, Date department) throws AppException {
         log.info("#createRequest size = " + size + " class = " + room_class +
@@ -139,7 +143,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         log.info("request = " + request);
         return request;
     }
-
+    // Helps to find request by ID with connection
     @Override
     public Request findRequestByID(Connection con, int id) throws AppException {
         log.info("#findRequestByID id = " + id);
@@ -170,7 +174,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         log.info("request = " + request);
         return request;
     }
-
+    // Helps to find request by user (all requests of user)
     @Override
     public Request findRequestByUser(Connection con, User user) throws AppException {
         log.info("#findRequestByUser , user = " + user);
@@ -202,7 +206,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         }
         return request;
     }
-
+    // Helps to extract (get all information and create entity of request) from result set
     @Override
     public Request extractRequest(ResultSet rs) throws AppException {
         log.info("#extractRequest");
@@ -222,7 +226,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         log.info("Request = " + request);
         return request;
     }
-
+    // Helps to create response for mentioned request on selected room with connection
     @Override
     public Request createResponse(Connection con, Request request, Room room) throws AppException {
         log.info("#createResponse request = " + request + " room = " + room);
@@ -242,7 +246,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         }
         return request;
     }
-
+    // Helps to extract response from database
     @Override
     public Request extractResponse(Request request, ResultSet rs) throws AppException {
         log.info("#extractResponse req = " + request);
@@ -255,7 +259,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         log.info("req = " + request);
         return request;
     }
-
+    // Updating request status
     @Override
     public Request updateRequestStatus(Request request, String status) throws AppException {
         Connection con = null;
@@ -273,7 +277,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         }
         return request;
     }
-
+    // Same as above with connection
     @Override
     public Request updateRequestStatus(Connection con, Request request, String status) throws AppException {
         log.info("updateRequestStatus request = " + request + " status = " + status);
@@ -293,7 +297,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
         }
         return request;
     }
-
+    // Rollback for transaction
     @Override
     public void rollback(Connection con) {
         if(con != null){
@@ -304,7 +308,7 @@ public class RequestDAO implements com.epam.project.hotel.dao.RequestDAO {
             }
         }
     }
-
+    // Closing connection method
     @Override
     public void close(AutoCloseable ac) {
         if(ac != null){

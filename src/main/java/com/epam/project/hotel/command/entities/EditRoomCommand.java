@@ -12,6 +12,10 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The command allows the manager to change the status of the room to one of the available
+ * ones and returns the editRoom attribute, which indicates whether the room and the new room object have been edited
+ */
 public class EditRoomCommand implements Command {
     private static final Logger log = LogManager.getLogger(EditRoomCommand.class);
     @Override

@@ -9,7 +9,9 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.List;
-
+/**
+ * Interface that provides all SQL queries for RequestDAO methods.
+ */
 public interface RequestDAO extends EntityDAO{
     String INSERT_REQUEST = "INSERT INTO " +
             "request(user_id, request_size, request_class, request_arrival, request_department, request_status)" +
