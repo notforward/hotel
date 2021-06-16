@@ -23,6 +23,7 @@ public interface CheckDAO extends EntityDAO {
     String SELECT_ALL_CHECKS = "SELECT * FROM payment_check";
     String SELECT_ROOMS = "SELECT * FROM payment_check WHERE payment_check.user_id = ? LIMIT ? OFFSET ?";
     String FIND_SIZE = "SELECT COUNT(*) FROM payment_check";
+    String SELECT_USER_CHECKS = "SELECT COUNT(*) FROM payment_check WHERE user_id = ? AND check_status = 'PAYED'";
 
     Check findCheckByID(int id) throws AppException;
     Check findCheckByID(Connection con, int id) throws AppException;
@@ -35,6 +36,7 @@ public interface CheckDAO extends EntityDAO {
 
     int findChecksSize() throws AppException;
 
+    Boolean checkDiscount(Connection con, User user) throws AppException;
     Boolean checkCreation(Date arrival, Date department, int id) throws AppException;
     Boolean checkCreation(Connection con, Date arrival, Date department, int id) throws AppException;
 

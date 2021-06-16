@@ -9,6 +9,7 @@ public class User implements Entity{
     private String email;
     private String password;
     private String role;
+    private boolean discount;
 
     @Override
     public String toString() {
@@ -18,6 +19,7 @@ public class User implements Entity{
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", discount=" + discount +
                 '}';
     }
 
@@ -59,5 +61,13 @@ public class User implements Entity{
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(boolean discount) {
+        this.discount = discount;
     }
 }

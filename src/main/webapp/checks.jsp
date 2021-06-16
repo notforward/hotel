@@ -45,7 +45,7 @@
 </c:choose>
 |
 <form action="controller" style='display:inline;'>
-    <my:command command="showusercheck"/>
+    <my:command command="showuserchecks"/>
     <select name="page">
         <c:forEach begin="1" end="${pages}" var="p">
             <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>

@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `hotel_db`.`user`
     `user_login`    VARCHAR(20) NOT NULL UNIQUE,
     `user_password` VARCHAR(40) NOT NULL,
     `user_email`    VARCHAR(32) NOT NULL,
+    `user_discount` BOOLEAN     NOT NULL,
     `role_id`       INT         NOT NULL,
     PRIMARY KEY (`user_id`),
     INDEX `role_idx` (`role_id` ASC) VISIBLE,
@@ -112,10 +113,10 @@ INSERT INTO user_role(role_id, role_description)
 VALUES (1, 'USER');
 INSERT INTO user_role(role_id, role_description)
 VALUES (2, 'MANAGER');
-INSERT INTO user(user_login, user_password, user_email, role_id)
-VALUES ('artem', '173447602773428053556316684567667297915', 'artem@mail.com', 1);
-INSERT INTO user(user_login, user_password, user_email, role_id)
-VALUES ('manager', '259843148858212261655504462973610160465', 'manager@mail.com', 2);
+INSERT INTO user(user_login, user_password, user_email, role_id, user_discount)
+VALUES ('artem', '173447602773428053556316684567667297915', 'artem@mail.com', 1, false);
+INSERT INTO user(user_login, user_password, user_email, role_id, user_discount)
+VALUES ('manager', '259843148858212261655504462973610160465', 'manager@mail.com', 2, false);
 INSERT INTO room (room_status, room_name, room_price, room_description, room_size, room_class, room_photo)
 VALUES ('FREE', 'Standard Room', 100, 'Standard Room description', 2, 'ECONOM', 'static/StandardRoom.jpg');
 INSERT INTO room (room_status, room_name, room_price, room_description, room_size, room_class, room_photo)

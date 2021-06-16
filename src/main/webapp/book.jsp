@@ -25,6 +25,11 @@
     <label class="form-label"><fmt:message key="book.cost"/> </label>
     <input class="form-control" type="text" placeholder="${sessionScope.room.price}$"
            aria-label="Disabled input price" disabled readonly id="margin-top">
+    <c:if test="${user.discount}">
+        <div class="alert alert-success col-md-6 margin" role="alert">
+            <fmt:message key="check.discount"/>
+        </div>
+    </c:if>
     <label class="form-label"><fmt:message key="book.payment"/> </label>
     <input class="form-control" type="text" placeholder="Cash"
            aria-label="Disabled input price" disabled readonly id="margin-top">

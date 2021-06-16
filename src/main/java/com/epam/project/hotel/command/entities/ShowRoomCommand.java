@@ -6,6 +6,7 @@ import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
 import com.epam.project.hotel.dao.entities.mysql.RoomDAO;
 import com.epam.project.hotel.sql.AppException;
 import com.epam.project.hotel.sql.entities.Room;
+import com.epam.project.hotel.sql.entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +28,10 @@ public class ShowRoomCommand implements Command {
             throw new AppException("Cannot find selected room, try again");
         }
         log.info("Room = " + room);
+        User user = (User) req.getSession().getAttribute("user");
+        if(user.isDiscount()){
+            room.setPrice((int) (room.getPrice() * 0.8));
+        }
         req.getSession().setAttribute("room", room);
         return adress;
     }

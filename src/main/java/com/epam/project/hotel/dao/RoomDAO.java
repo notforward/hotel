@@ -17,7 +17,7 @@ public interface RoomDAO extends EntityDAO {
     String SELECT_ROOMS_PRICE = "SELECT * FROM room ORDER BY room.room_price DESC LIMIT ? OFFSET ?";
     String SELECT_ROOMS_SIZE = "SELECT * FROM room ORDER BY room.room_size DESC LIMIT ? OFFSET ?";
     String SELECT_ROOMS_CLASS = " SELECT * FROM room ORDER BY room.room_class DESC LIMIT ? OFFSET ?";
-    String SELECT_ROOMS_STATUS = "SELECT * FROM room ORDER BY room.room_status DESC LIMIT ? OFFSET ?";
+    String SELECT_ROOMS_STATUS = "SELECT * FROM room ORDER BY room.room_status ASC LIMIT ? OFFSET ?";
     String FIND_SIZE = "SELECT COUNT(*) FROM room";
 
     Room findRoomID(int id) throws AppException;

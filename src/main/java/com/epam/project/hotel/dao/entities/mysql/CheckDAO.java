@@ -184,6 +184,32 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
         log.info("size = " + size);
         return size;
     }
+    // Checking for user discount
+    @Override
+    public Boolean checkDiscount(Connection con, User user) throws AppException {
+        PreparedStatement ps;
+        ResultSet rs;
+        int amount = 0;
+        int needed_amount = 3;
+        try {
+            ps = con.prepareStatement(SELECT_USER_CHECKS);
+            ps.setInt(1, user.getId());
+            log.info("ps = " + ps);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                amount = rs.getInt(1);
+                if(amount >= needed_amount){
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Problem at checkDiscount", e);
+            throw new AppException("Cannot check discount for you, please try again");
+        }
+        log.info("amount = " + amount);
+        return false;
+    }
+
     // Helps to get check entity from rs
     private Check extractCheck(ResultSet rs) throws SQLException {
         log.info("#extractCheck");
@@ -304,7 +330,15 @@ public class CheckDAO implements com.epam.project.hotel.dao.CheckDAO {
             ps.setInt(k++, room.getId());
             ps.setDate(k++, (java.sql.Date) arrival);
             ps.setDate(k++, (java.sql.Date) departure);
-            ps.setInt(k++, room.getPrice());
+            int price = room.getPrice();
+            if(!user.isDiscount()){
+                if(checkDiscount(con, user)){
+                    double discount = 0.8;
+                    price = (int) Math.round(room.getPrice() * discount);
+                    user.setDiscount(true);
+                }
+            }
+            ps.setInt(k++, price);
             ps.setString(k++, "NOT PAYED");
 
             long millis = System.currentTimeMillis();

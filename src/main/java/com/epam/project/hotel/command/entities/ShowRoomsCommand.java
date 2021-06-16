@@ -43,7 +43,7 @@ public class ShowRoomsCommand implements Command {
             log.info("sortby == null");
             sortBy = "price";
         }
-        log.info("sort by=" + sortBy);
+        log.info("sort by = " + sortBy);
         rooms = roomDAO.findRooms((page - 1) * pageSize, pageSize, sortBy);
         int roomsSize = roomDAO.findRoomsSize();
         int pages = (int) Math.ceil(roomsSize * 1.0 / pageSize);

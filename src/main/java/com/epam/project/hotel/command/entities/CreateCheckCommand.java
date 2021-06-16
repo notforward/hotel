@@ -5,7 +5,9 @@ import com.epam.project.hotel.dao.Factory;
 import com.epam.project.hotel.dao.RequestDAO;
 import com.epam.project.hotel.dao.entities.mysql.CheckDAO;
 import com.epam.project.hotel.dao.entities.mysql.MySQLFactory;
+import com.epam.project.hotel.dao.entities.mysql.UserDAO;
 import com.epam.project.hotel.sql.AppException;
+import com.epam.project.hotel.sql.DataSource;
 import com.epam.project.hotel.sql.entities.Check;
 import com.epam.project.hotel.sql.entities.Request;
 import com.epam.project.hotel.sql.entities.Room;
@@ -15,6 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -46,7 +50,26 @@ public class CreateCheckCommand implements Command {
                 "departure = " + departure);
         Factory factory = MySQLFactory.getInstance();
         CheckDAO checkDAO = (CheckDAO) factory.getDAO("CheckDAO");
-        Check check = checkDAO.createCheck(user, room, arrival, departure);
+        UserDAO userDAO = (UserDAO) factory.getDAO("UserDAO");
+        Check check;
+        Connection con = null;
+        try {
+            con = DataSource.getConnection();
+            check = checkDAO.createCheck(con, user, room, arrival, departure);
+            if(user.isDiscount()){
+                user = userDAO.updateDiscount(con, user);
+                req.getSession().setAttribute("user", user);
+            }
+            con.commit();
+        } catch (SQLException e) {
+            log.error("Problem at transaction create check");
+            userDAO.rollback(con);
+            throw new AppException("Cannot create check, try again");
+        }
+        finally {
+            userDAO.close(con);
+        }
+
         log.info("Check after creation" + check);
         req.getSession().setAttribute("check", check);
         req.getSession().removeAttribute("arrival");

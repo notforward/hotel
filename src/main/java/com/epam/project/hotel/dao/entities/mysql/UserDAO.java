@@ -89,6 +89,24 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         log.info("pass after hashing = " + md5Hex.toString());
         return md5Hex.toString();
     }
+
+    @Override
+    public User updateDiscount(Connection con, User user) throws AppException {
+        PreparedStatement ps;
+        try {
+            ps = con.prepareStatement(UPDATE_DISCOUNT);
+            ps.setInt(1, user.getId());
+            log.info("ps = " + ps);
+            ps.execute();
+            user = findUserID(con, user.getId());
+        } catch (SQLException e) {
+            log.error("Problem at update discount", e);
+            throw new AppException("Cannot update discount");
+        }
+        log.info("user = " + user);
+        return user;
+    }
+
     // finding user on selected id
     @Override
     public User findUserID(int id) throws AppException {
@@ -179,7 +197,8 @@ public class UserDAO implements com.epam.project.hotel.dao.UserDAO, Entity {
         user.setPassword(rs.getString("user_password"));
         user.setEmail(rs.getString("user_email"));
         user.setRole(rs.getString("role_id"));
-        log.info("User role = " + user.getRole());
+        user.setDiscount(rs.getBoolean("user_discount"));
+        log.info("User = " + user);
         return user;
     }
     // Rollback for transaction

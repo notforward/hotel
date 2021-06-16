@@ -33,6 +33,11 @@
     <label class="form-label"><fmt:message key="book.cost"/> </label>
     <input class="form-control margin" type="text" placeholder="${sessionScope.check.price}$"
            aria-label="Disabled input price" disabled readonly style="margin: 7px">
+    <c:if test="${user.discount}">
+        <div class="alert alert-success col-md-6 margin" role="alert">
+            <fmt:message key="check.discount"/>
+        </div>
+    </c:if>
 </div>
 <c:choose>
     <c:when test="${sessionScope.check.check_status == 'PAYED'}">

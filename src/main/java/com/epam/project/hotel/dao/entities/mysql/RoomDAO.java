@@ -98,9 +98,9 @@ public class RoomDAO implements com.epam.project.hotel.dao.RoomDAO {
     // Helps to find selected rooms on offset with limit and order
     @Override
     public List<Room> findRooms(int offset, int limit, String orderBy) throws AppException {
-        log.info("#findRooms offset = " + offset + " limit = " + limit + " orderBy = " + orderBy);
-        Connection con = null;
-        PreparedStatement ps;
+            log.info("#findRooms offset = " + offset + " limit = " + limit + " orderBy = " + orderBy);
+            Connection con = null;
+            PreparedStatement ps;
         ResultSet rs;
         List<Room> rooms;
         try {
